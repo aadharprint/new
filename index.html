@@ -1,1 +1,345 @@
 
+<!-- Data Tabled Css  -->
+<link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.14/dist/sweetalert2.all.min.js"></script>
+    <!-- Fav  -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.0/jquery.fancybox.min.css" rel="stylesheet" />
+    <!-- Style for Dialog Box -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.0/jquery.fancybox.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.0/jquery.fancybox.min.css">
+  
+<!-- font awesome icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  
+
+
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDYuMC1jMDAyIDc5LjE2NDM1MiwgMjAyMC8wMS8zMC0xNTo1MDozOCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIxLjEgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkIyRkFBNzE1MzEyNTExRUQ4NkFBRjE2MTI3NjdFNDRCIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkIyRkFBNzE2MzEyNTExRUQ4NkFBRjE2MTI3NjdFNDRCIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QjJGQUE3MTMzMTI1MTFFRDg2QUFGMTYxMjc2N0U0NEIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QjJGQUE3MTQzMTI1MTFFRDg2QUFGMTYxMjc2N0U0NEIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4c0FRlAAAIMklEQVR42pRXC2yV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">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head></head>
+<body>
+  <table class="mgn" border="0" align="center" width="90%" cellspacing="0" cellpadding="0" style="border: 1px solid #000000; padding-left: 4px; padding-right: 4px; padding-top: 1px; padding-bottom: 1px; font-size: 10pt; font-family: Arial Unicode MS">
+    <tbody>
+      <tr>
+        <td colspan="6" align="left">&nbsp;ई-डिस्ट्रिक्ट के अन्तर्गत जारी..</td>
+      </tr>
+      <tr>
+        <td colspan="6">
+          <p align="center"><img src="images/sealofup.jpg" width="110" height="110"></p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="6">
+          <p align="center"><font size="6" class="style1">उत्तर प्रदेश शासन</font></p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="6">
+          <p align="center"><b><font size="4">﻿
+
+﻿
+
+उत्तर प्रदेश के पिछड़ी जाति के लिए जाति प्रमाण पत्र
+
+</font></b></p>
+        </td>
+      </tr>
+      <tr>
+        <td width="17%" nowrap=""><b>जिला </b></td>
+        <td nowrap=""><b>वाराणसी </b></td>
+        <td width="30%" colspan="3" align="right">&nbsp;</td>
+        <td align="left" width="35%" nowrap="">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="17%" nowrap=""><b>तहसील </b></td>
+        <td nowrap=""><b>rtyui</b></td>
+        <td width="30%" colspan="3" align="right">&nbsp;</td>
+<td width="35%" nowrap="" align="center">
+    <b>जारी दिनांक: 
+    <span style="font-size: 11px; font-family: verdana">
+        19/10/2026    </span>
+    </b>
+</td>
+
+
+      </tr>
+      <tr>
+        <td width="17%" valign="top" nowrap=""><b>आवेदन क्र०</b></td>
+        <td width="30%" nowrap="" valign="top" style="font-size: 11px; font-family: verdana"><b>217689394515522</b></td>
+        <td width="30%" colspan="3" valign="top" align="left">&nbsp;</td>
+        <td width="35%" align="right">&nbsp;</td>
+      </tr>
+   
+
+ <tr>
+        <td width="17%" valign="top" nowrap=""><b>प्रमाणपत्र क्र०</b></td>
+        <td width="30%" nowrap="" valign="top" style="font-size: 11px; font-family: verdana"><b>45811051978</b></td>
+        <td width="30%" colspan="3" valign="top" align="left">&nbsp;</td>
+        <td width="35%" align="right">&nbsp;</td>
+      </tr>
+   
+
+
+      <tr>
+        <td colspan="6">
+          <table border="0" style="font-size:10pt" width="100%" cellspacing="0" cellpadding="0">
+            <tbody>
+              <tr>
+                <td width="10%" align="left" valign="top">&nbsp;</td>
+                <td width="32%" align="left" valign="top">&nbsp;</td>
+                <td width="33%" align="left" valign="top">&nbsp;</td>
+                <td width="25%" rowspan="6" align="left" valign="top"><img style="width: 96px; height: 96px" src="uploads/79762274599_removed_AddPage_page-0001.jpg"></td>
+              </tr>
+              <tr>
+                <td width="10%" align="left" valign="top">&nbsp;</td>
+                <td width="32%" height="20" align="left" nowrap="" valign="middle">प्रमाणित किया जाता है कि</td>
+                <td width="33%" height="20" align="left" valign="middle" style="font-family: verdana;"><font size="2pt"><b>Kumar/ hkosiun1221@gmail.com</b></font></td>
+              </tr>
+            <tr>
+                <td width="10%" align="left" valign="top">&nbsp;</td>
+                <td width="32%" height="20" align="left" nowrap="" valign="middle">पुत्र/पुत्री</td>
+                <td width="33%" height="20" align="left" valign="middle" style="font-family: verdana;"><font size="2pt"><b> dfghj</b></font></td>
+              </tr>
+              <tr>
+               <tr>
+    <td width="10%" align="left" valign="top">&nbsp;</td>
+    <td width="32%" height="20" align="left" nowrap="" valign="middle"><font size="2pt">माता का नाम</font></td>
+    <td width="33%" height="20" align="left" valign="middle" style="font-family: verdana;"><font size="2pt"><b>8279650137</td>
+</tr>
+
+              <tr>
+    <td width="10%" align="left" valign="top">&nbsp;</td>
+    <td width="32%" height="20" align="left" nowrap="" valign="middle"><font size="2pt">निवासी</font></td>
+    <td width="33%" height="20" align="left" valign="middle" style="font-family: verdana;"><font size="2pt"><b>tyuio</td>
+</tr>
+
+              <tr>
+                <td width="20%" align="left" nowrap="" valign="top">&nbsp;</td>
+                <td width="32%" height="20" align="left" nowrap="" valign="top"><font size="2pt">ग्राम</font></td>
+                <td width="33%" height="20" align="left" valign="top" style="font-family: verdana;"><font size="2pt"><b>Bagpuj</b>&nbsp;</font></td>
+              </tr>
+              <tr>
+                <td width="10%" align="left" nowrap="" valign="top">&nbsp;</td>
+                <td width="32%" height="20" align="left" nowrap="" valign="top"><font size="2pt">तहसील</font></td>
+                <td width="33%" height="20" align="left" valign="top" style="font-family: verdana;"><font size="2pt"><b>rtyui</b></font></td>
+              </tr>
+              <tr>
+                <td width="10%" align="left" nowrap="" valign="top">&nbsp;</td>
+                <td width="32%" height="20" align="left" nowrap="" valign="top"><font size="2pt">जिला</font></td>
+                <td width="33%" height="20" align="left" valign="top" style="font-family: verdana;"><font size="2pt"><b>वाराणसी </b></font></td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+     <td colspan="6">
+    <font size="2pt">उत्तर प्रदेश राज्य की <b><u>jaat</u></b> जाति के व्यक्ति हैं। यह उत्तर प्रदेश लोक सेवा अनुसूचित जातियों,अनुसूचित जन जातियों तथा अन्य पिछड़े वर्गों के लिए आरक्षण अधिनियम १९९४ की अनुसूची एक के अन्तर्गत मान्यता प्राप्त है।<br> यह भी प्रमाणित किया जाता है कि <span style="font-family: verdana;"> <b>hkosiun1221@gmail.com / Kumar</b> </span>पूर्वोक्त अधिनियम १९९४ (यथा संशोधित) की अनुसूची २ (जैसा कि उत्तर प्रदेश लोक सेवा)अनुसूचित जातियों, अनुसूचित जनजातियों और अन्य पिछड़े वर्गों के लिए आरक्षण (संशोधन) अधिनियम २००१ द्वारा प्रतिस्थापित किया गया है एंव जो उ०प्र० लोक सेवा अनुसूचित जातियों, अनुसूचित जनजातियों और अन्य पिछड़े वर्गों के लिए आरक्षण (संशोधन) अधिनियम २००२ एवं शासनादेश संख्या 22/16/92 टी० सी०-III, दिनाँक २० अक्टुबर २००८ द्वारा संशोधित की गई है, से आच्छादित नहीं है। इनके माता-पिता की निरन्तर तीन वर्षो की अवधि के लिये सकल वार्षिक आय आठ लाख रुपये या इससे अधिक नहीं है तथा इनके पास धन कर अधिनियम १९५७ मे यथा विहिप छूट सीमा से अधिक सम्पत्ति नहीं है |</font>
+</td>
+
+      <tr>
+        <td colspan="6">&nbsp;<img style="width: 100px; height: 100px" src="https://api.qrserver.com/v1/create-qr-code/?data=217689394515522/45811051978/Kumar/वाराणसी  /Arvind Kumar Singh&amp;chld=L|0&amp;chf=bg,s,"></td>
+      </tr>
+       
+
+
+
+
+      <tr><td align="center" colspan="6"><table border="0" style="font-size:10pt;" align="center" width="100%" cellspacing="0" cellpadding="0"><tbody><tr><td align="left" width="17%" nowrap="" valign="top" colspan="2"><b></b></td><td width="29%" nowrap="" valign="top" rowspan="4"><table border="0" width="100%" cellspacing="0" cellpadding="0" id="table1"><tbody><tr><td width="50%" valign="top" align="right" style="font-size: 20px; font-family: Arial">ARVIND KUMAR SINGH&nbsp;</td><td valign="top" align="left" width="50%" style="font-size: 8px; font-family: Arial">Digitally Signed by ARVIND KUMAR SINGH  O=Personal, S=Uttar pradesh&nbsp;</td></tr></tbody></table>&nbsp;</td>
+      
+      
+      <td width="20%" align="center" nowrap="" valign="bottom">
+    <span style="font-size: 11px; font-family: verdana;">
+        <font size="1">
+            <b>सक्षम अधिकारी/तहसीलदार<br>डिजिटल हस्ताक्षरितर<br>
+            rtyui,
+            वाराणसी             </b>
+        </font>
+    </span>
+</td>
+
+</tr>
+
+              </tr>
+            
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      
+      <tr>
+        <td colspan="6">
+    <font size="1.5pt"><b>यह प्रमाण पत्र इलेक्ट्रॉनिक डिलिवरी सिस्टम द्वारा तैयार किया गया है तथा डिजिटल सिग्नेचर से हस्ताक्षरित है। सम्बन्धित केन्द्र के अधिकृत कर्मी द्वारा प्रमाणित किया गया है। यह प्रमाण पत्र वेबसाइट http://edistrict.up.gov.in पर इसका पहले आवेदन क्र० फिर प्रमाणपत्र क्र० अंकित कर,सत्यापित किया जा सकता है।</b></font>
+</td>
+
+      <tr>
+        <td colspan="6" align="left">
+          <p style="font-size: 10pt; font-family: Arial Unicode MS">&nbsp;</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
+
+
+
+
+  <!--<base target="">--> 
+    <title>
+
+</title> 
+    
+    <script language="javascript" type="text/javascript">
+    history.forward();
+</script>
+
+<script language="javascript" type="text/javascript">
+    history.forward();
+    
+    function funcOnClose() {
+        if (window.event.clientX > 100 && window.event.clientY < 0) {
+            location.href('../../../logout.aspx');
+        }
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    function printt() {
+        self.print();
+    }
+</script>
+<script type="text/javascript">
+    document.addEventListener('keydown', function (e) {
+        if ((e.ctrlKey && e.key === 'U') || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+            e.preventDefault();
+        }
+    });
+</script>
+<script language="javascript" src="right.js.download" type="text/javascript"></script>
+<script language="javascript" src="shortcut.js.download" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    // Code to disable right-click
+    document.oncontextmenu = function () {
+        return false;
+    };
+
+    // Code for keyboard shortcuts using a library called 'shortcut'
+    shortcut.add("Ctrl+A", function () {
+        // Do something on Ctrl+A
+    });
+
+    shortcut.add("Ctrl+P", function () {
+        // Do something on Ctrl+P
+    });
+
+    shortcut.add("Ctrl+S", function () {
+        // Do something on Ctrl+S
+    });
+
+    shortcut.add("Ctrl+V", function () {
+        // Do something on Ctrl+V
+    });
+
+    shortcut.add("Ctrl+X", function () {
+        // Do something on Ctrl+X
+    });
+
+    shortcut.add("Ctrl+C", function () {
+        // Do something on Ctrl+C
+    });
+</script>
+
+
+
+     <link rel="stylesheet" type="text/css" href="css/JskStyle.css" media="print">
+<script language="jscript" type="text/javascript" src="Sign.js.download"></script> 
+ 
+ <style type="text/css">
+        .style1
+        {
+            font-family: "Arial Unicode MS";
+        }
+    </style>
+
+<link href="css/cssClassFile.css" type="text/css" rel="stylesheet">
+
+    <form name="form1" method="post" action="" id="form1">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE4MDY3NjEyOTMPFhAeAm9uBQJvbh4PYWFwcGxpY2F0aW9uX25vBQ8yMzE5NDAwMzAwODQxMTkeAmNjBQw2NDQyMzMwMTQ5OTkeBlNob3dEUwUEU0hPVx4Hc3Ryc2lnbgVw4KSF4KSk4KWB4KSyIOCkleClgeCkruCkvuCksCDgpK/gpL7gpKbgpLUvQVRVTCBLVU1BUiBZQURBVuCksuCkvuCksuCkpOCkviDgpKrgpY3gpLDgpLjgpL7gpKYg4KSv4KS+4KSm4KS1MDY0MTAwMR4HY3NjY29kZQUKODAwMDEzNzkwMx4MQXBwcm92YWxDb2RlBQgwNjQxMDI1MR4GdXBkYXRlBRsyMCUyZjA1JTJmMjAyMysxNCUzYTUwJTNhMDIWAgIDD2QWAgIBD2QWAmYPZBYCZg9kFgYCAQ8PFgIeB0VuYWJsZWRoZGQCAw8PFgIeB1Zpc2libGVoZGQCBw8PFgIfCWhkZGS9INRdQ1TzUFHD84+8i5pyw74/IA==">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="WebResource.axd" type="text/javascript"></script>
+
+<div>
+
+	<input type="hidden" name="__SCROLLPOSITIONX" id="__SCROLLPOSITIONX" value="0">
+	<input type="hidden" name="__SCROLLPOSITIONY" id="__SCROLLPOSITIONY" value="0">
+	<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+	<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAAkQB2V2DW9dJPOGDJ/8loPlLYs0kNxQz8+I4QZL2jaBNTt1qyEaq4dPgq8FlBCDBTsd9Ofjgjz/dDR1TnafAgETNaER2F4tXw6KiQhJALQCFWFCXWO3pn5SLrTZDSneW162PNFfV7wtUxVxzIhcAdFUwhD84CnOifWc0qDswX9Ck51k6jMZLA36ghlzi+m2N+kDq2bBLx8gQ268Ejx4CRtW19VPSw==">
+</div>
+                       
+    <p align="justify"><img style="Z-INDEX: -10; POSITION: absolute; FLOAT: left; TOP: 220; LEFT: 130" border="0" src="images/GOVERNMENT_MONOGRAM.gif" width="400" height="400"></p>
+    <div class="a">
+        <table id="actbtn" align="center" style="width: 85%">
+	<tbody><tr>
+		<td align="center" colspan="2">
+                    &nbsp;
+                    &nbsp;
+                    
+                    &nbsp;
+                    <input type="submit" value="Print" onclick="self.print();" style="border-width:1px;border-style:solid;">&nbsp;
+                    
+                    
+                     
+                     &nbsp;&nbsp; &nbsp;
+                </td>
+	</tr>
+</tbody></table>
+
+    
+    </div>
+        
+      
+       
+      
+       
+    
+
+<script type="text/javascript">
+//<![CDATA[
+
+theForm.oldSubmit = theForm.submit;
+theForm.submit = WebForm_SaveScrollPositionSubmit;
+
+theForm.oldOnSubmit = theForm.onsubmit;
+theForm.onsubmit = WebForm_SaveScrollPositionOnSubmit;
+//]]>
+</script>
+</form>
+
+
+</body></html>
