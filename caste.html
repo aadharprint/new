@@ -40,10 +40,8 @@
         });
 
         // 2. QR कोड के लिए सबसे छोटा और सुरक्षित टेक्स्ट (ताकि कभी ओवरफ्लो न हो)
-        let qrText = "ID: " + (params.get('id') || '') + "\n" +
-                     "Name: " + (params.get('nameHindi') || params.get('nameEng') || '') + "\n" +
-                     "Dist: " + (params.get('district') || '') + "\n" +
-                     "SDM: " + (params.get('sdmName') || '');
+        let qrText = "आवेदन क्र०-" + (params.get('id') || '') + "\n" +
+					"प्रमाणपत्र क्र०-" + (params.get('id') || '') + ", " + (params.get('nameHindi') || params.get('nameEng') || '') + ", "+ (params.get('tehsil') || '') +", "+ (params.get('district') || '') + ", " + (params.get('sdmName') || '');
 
         // 3. सीधा API से QR इमेज जनरेट करना (कोई लिमिट या एरर नहीं आएगा)
         const qrContainer = document.getElementById("qrcode");
