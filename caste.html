@@ -47,9 +47,9 @@ const params = new URLSearchParams(window.location.search);
 let textForQR = "प्रमाण पत्र विवरण:\n" +
                 "आवेदन क्र०: " + (params.get('id') || '') + "\n" +
                 "नाम: " + (params.get('nameHindi') || '') + " / " + (params.get('nameEng') || '') + "\n" +
-                "जिला: " + (params.get('district') || '') + " | तहसील: " + (params.get('tehsil') || '') + "\n" +
                 "जाति: " + (params.get('caste') || '') + "\n" +
-                "SDM: " + (params.get('sdmName') || '');
+                "जिला: " + (params.get('district') || '') + " | तहसील: " + (params.get('tehsil') || '') + "\n" +
+                " " + (params.get('sdmName') || '');
 
 // पुराना QR अगर हो तो साफ करें और नया बनाएं
 document.getElementById("qrcode").innerHTML = "";
