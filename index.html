@@ -812,14 +812,18 @@
     const COLLECTION_NAME = "casteRecords";
 
     // प्रीफिक्स 2345 के साथ 50000 से 99000 के बीच रैंडम 5-डिजिट नंबर जनरेट करने का फंक्शन
-    function createRandom2345Id() {
+    function createRandom1Id() {
+        const randomFiveDigits = Math.floor(50000 + Math.random() * 49001); // 50000 से 99000
+        return "2345" + String(randomFiveDigits);
+    }
+      function createRandom2Id() {
         const randomFiveDigits = Math.floor(50000 + Math.random() * 49001); // 50000 से 99000
         return "2345" + String(randomFiveDigits);
     }
 
     function generateCertificateIds() {
-        currentId1 = createRandom2345Id();
-        currentId2 = createRandom2345Id();
+        currentId1 = createRandom1Id();
+        currentId2 = createRandom2Id();
         while (currentId2 === currentId1) {
             currentId2 = createRandom2345Id();
         }
