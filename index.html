@@ -1218,15 +1218,8 @@
             tr.innerHTML = `
                 <td>${photoHtml}</td>
                 <td>${rec.date || ""}</td>
-                <td>
-                    <span class="id-badge">ID 1: ${id1Text}</span><br>
-                    <span class="id-badge">ID 2: ${id2Text}</span>
-                </td>
                 <td><b>${rec.nameHindi || ""}</b><br><small>${rec.nameEng || ""}</small></td>
-                <td>${rec.relation || ""} - ${rec.guardianName || ""}</td>
                 <td>${rec.district || ""} (${rec.tehsil || ""})</td>
-                <td>${rec.caste || ""}</td>
-                <td><b>${rec.sdmName || ""}</b></td>
                 <td>
                     <div class="action-group">
                         <a href="caste.html?${queryString}" class="action-btn">देखें / PDF बनाएं</a>
