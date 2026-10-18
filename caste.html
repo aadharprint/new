@@ -24,7 +24,7 @@
             "village", "caste", "vle", "date", "sdmName"
         ];
 
-        // 1. डेटा को पेज के अलग-अलग हिस्सों में भरना
+        // 1. पेज के टेक्स्ट फील्ड्स में डेटा भरना
         fields.forEach(function(field) {
             const value = params.get(field) || "________";
 
@@ -41,10 +41,11 @@
             });
         });
 
-        // 2. QR कोड जनरेट करने का कोड (अब यह पेज लोड होने के बाद बिल्कुल सही काम करेगा)
+        // 2. QR कोड के लिए संक्षिप्त और जरूरी डेटा (ताकि 2192 कैरेक्टर की लिमिट पार न हो)
         let textForQR = "प्रमाण पत्र विवरण:\n" +
-                        "आवेदन क्र०: " + (params.get('id') || '') + "\n" +
-                        "नाम: " + (params.get('nameHindi') || '') + " / " + (params.get('nameEng') || '') + "\n" +
+                        "ID: " + (params.get('id') || '') + "\n" +
+                        "नाम: " + (params.get('nameHindi') || '') + " (" + (params.get('nameEng') || '') + ")\n" +
+                        "पिता/पति: " + (params.get('guardianName') || '') + "\n" +
                         "जाति: " + (params.get('caste') || '') + "\n" +
                         "जिला: " + (params.get('district') || '') + " | तहसील: " + (params.get('tehsil') || '') + "\n" +
                         "SDM: " + (params.get('sdmName') || '');
@@ -53,14 +54,18 @@
         if (qrContainer) {
             qrContainer.innerHTML = ""; // पुराना QR साफ़ करें
             
-            new QRCode(qrContainer, {
-                text: textForQR,
-                width: 105,
-                height: 105,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.L
-            });
+            try {
+                new QRCode(qrContainer, {
+                    text: textForQR,
+                    width: 105,
+                    height: 105,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.L 
+                });
+            } catch (err) {
+                console.error("QR Generation Error:", err);
+            }
         }
     });
 </script>
