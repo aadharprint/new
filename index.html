@@ -586,12 +586,27 @@
 <div class="container">
     <!-- मुख्य वेबसाइट हेडर -->
     <div class="site-header">
-        <div class="badge-top">OVI PRINTS</div>
+        <div class="badge-top">Online Certificate Portal</div>
         <h1>कास्ट सर्टिफिकेट (Caste Certificate)</h1>
         <p>जाति प्रमाण पत्र</p>
     </div>
 
     <div class="content-body">
+
+        <!-- ऑटो-जनरेटेड 2 सर्टिफिकेट आईडी (Prefix 2345 + 5 Digits: 50000-99000) -->
+        <div class="id-banner">
+            <div class="id-items">
+                <div class="id-pill">
+                    <span class="lbl">आवेदन क्र० (ID 1):</span>
+                    <strong id="displayId1">2345-----</strong>
+                </div>
+                <div class="id-pill">
+                    <span class="lbl">प्रमाण पत्र क्र० (ID 2):</span>
+                    <strong id="displayId2">2345-----</strong>
+                </div>
+            </div>
+            <button type="button" class="btn-regen" onclick="generateCertificateIds()">नई ID जनरेट करें</button>
+        </div>
         
         <form id="recordForm">
             <div class="form-grid">
@@ -793,20 +808,16 @@
     let currentId2 = "";
     const COLLECTION_NAME = "casteRecords";
 
-    // प्रीफिक्स 2345 के साथ 50000 से 99000 के बीच रैंडम 5-डिजिट नंबर जनरेट करने का फंक्शन
-    function createRandom1Id() {
+    function createRandom2345Id() {
         const randomFiveDigits = Math.floor(50000 + Math.random() * 49001); // 50000 से 99000
         return "2613900200" + String(randomFiveDigits);
     }
-      function createRandom2Id() {
-        return "0812620" + String(randomFiveDigit) - 2830;
-    }
 
     function generateCertificateIds() {
-        currentId1 = createRandom1Id();
-        currentId2 = createRandom2Id();
+        currentId1 = createRandom2345Id();
+        currentId2 = createRandom2345Id();
         while (currentId2 === currentId1) {
-            currentId2 = createRandom2Id();
+            currentId2 = createRandom2345Id();
         }
         const el1 = document.getElementById("displayId1");
         const el2 = document.getElementById("displayId2");
