@@ -519,7 +519,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
-            min-width: 760px;
+            min-width: 780px;
         }
 
         table.history-table th,
@@ -636,7 +636,7 @@
         }
 
         /* =========================================================
-           एंबेडेड पॉपअप मोडल (caste.html / domicile.html प्रीव्यू)
+           एंबेडेड पॉपअप मोडल (जिसमें अलग caste.html / domicile.html एम्बेड होगी)
            ========================================================= */
         .preview-modal-overlay {
             display: none;
@@ -646,7 +646,7 @@
             z-index: 2000;
             align-items: center;
             justify-content: center;
-            padding: 14px;
+            padding: 12px;
             backdrop-filter: blur(4px);
         }
 
@@ -657,8 +657,8 @@
         .preview-modal-window {
             background: #f1f5f9;
             width: 100%;
-            max-width: 940px;
-            max-height: 94vh;
+            max-width: 960px;
+            height: 94vh;
             border-radius: 16px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
             display: flex;
@@ -667,7 +667,6 @@
             border: 1px solid #cbd5e1;
         }
 
-        /* पॉपअप टॉप बार (Embedded URL Bar + Action Buttons) */
         .preview-modal-header {
             background: #0f172a;
             color: #ffffff;
@@ -732,7 +731,6 @@
             background: #059669;
             color: #ffffff;
         }
-
         .btn-download-pdf:hover {
             background: #047857;
         }
@@ -741,7 +739,6 @@
             background: #2563eb;
             color: #ffffff;
         }
-
         .btn-print-cert:hover {
             background: #1d4ed8;
         }
@@ -750,7 +747,6 @@
             background: #7c3aed;
             color: #ffffff;
         }
-
         .btn-share-cert:hover {
             background: #6d28d9;
         }
@@ -760,35 +756,41 @@
             color: #ffffff;
             padding: 8px 12px;
         }
-
         .btn-close-modal:hover {
             background: #b91c1c;
         }
 
-        /* पॉपअप बॉडी जहाँ A4 सर्टिफिकेट दिखेगा */
-        .preview-modal-body {
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            background: #cbd5e1;
+        /* एम्बेडेड आईफ्रेम कंटेनर */
+        .iframe-embed-container {
+            width: 100%;
             flex: 1;
+            background: #cbd5e1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* =========================================================
-           A4 सर्टिफिकेट डिजाइन (caste.html / domicile.html टेम्पलेट)
-           ========================================================= */
+        .cert-embed-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            flex: 1;
+            background: #cbd5e1;
+        }
+
+        /* हिडन प्रिंट/पीडीएफ बैकअप शीट (यदि सीधे पैरेंट से PDF जनरेट करना हो) */
+        .preview-modal-body {
+            display: none;
+        }
+
         .a4-certificate-sheet {
             width: 210mm;
             min-height: 292mm;
             background: #ffffff;
             color: #000000;
             padding: 12mm 14mm;
-            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
             position: relative;
             font-family: 'Noto Sans Devanagari', 'Inter', serif;
-            border: 1px solid #94a3b8;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -802,22 +804,20 @@
             flex-direction: column;
             justify-content: space-between;
             position: relative;
-            background: radial-gradient(circle at center, rgba(239, 246, 255, 0.4) 0%, rgba(255, 255, 255, 0.95) 70%);
+            background: #ffffff;
         }
 
-        /* वॉटरमार्क */
         .cert-watermark {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-28deg);
-            font-size: 54px;
+            font-size: 52px;
             font-weight: 800;
             color: rgba(30, 58, 138, 0.055);
             white-space: nowrap;
             pointer-events: none;
             z-index: 0;
-            user-select: none;
         }
 
         .cert-content-layer {
@@ -850,7 +850,6 @@
             font-weight: 800;
             color: #1e3a8a;
             margin: 0;
-            letter-spacing: 0.4px;
         }
 
         .cert-title-center .dept-subtitle {
@@ -869,7 +868,6 @@
             padding: 4px 22px;
             border-radius: 6px;
             margin-top: 2px;
-            letter-spacing: 0.5px;
         }
 
         .cert-Location-strip {
@@ -912,7 +910,6 @@
             font-weight: 800;
         }
 
-        /* मुख्य विवरण + फोटो ग्रिड */
         .cert-body-row {
             display: flex;
             justify-content: space-between;
@@ -933,7 +930,6 @@
             color: #000000;
             font-weight: 800;
             text-decoration: underline;
-            text-underline-offset: 3px;
         }
 
         .cert-photo-frame {
@@ -969,7 +965,6 @@
             font-weight: 600;
         }
 
-        /* सारणीबद्ध विवरण बॉक्स */
         .cert-details-table {
             width: 100%;
             border-collapse: collapse;
@@ -994,7 +989,6 @@
             color: #0f172a;
         }
 
-        /* फुटर (QR + डिजिटल सिग्नेचर) */
         .cert-footer-section {
             position: relative;
             z-index: 1;
@@ -1040,7 +1034,6 @@
             padding: 10px 16px;
             min-width: 245px;
             text-align: left;
-            position: relative;
         }
 
         .cert-sdm-sign-box .sig-valid-header {
@@ -1058,7 +1051,6 @@
             font-size: 15px;
             font-weight: 800;
             color: #0f172a;
-            letter-spacing: 0.4px;
             margin: 2px 0;
         }
 
@@ -1152,69 +1144,6 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
-
-            .preview-modal-body {
-                padding: 10px 6px;
-                justify-content: flex-start;
-            }
-
-            /* मोबाइल स्क्रीन पर भी A4 प्रीव्यू साफ दिखे */
-            .a4-certificate-sheet {
-                width: 100%;
-                min-width: 680px;
-                min-height: auto;
-                padding: 8mm;
-            }
-        }
-
-        /* प्रिंट मीडिया नियम: केवल A4 सर्टिफिकेट प्रिंट होगा */
-        @media print {
-            @page {
-                size: A4 portrait;
-                margin: 0;
-            }
-
-            body {
-                background: #ffffff !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-
-            .container,
-            .preview-modal-header,
-            .toast-msg {
-                display: none !important;
-            }
-
-            .preview-modal-overlay {
-                position: static !important;
-                display: block !important;
-                background: none !important;
-                padding: 0 !important;
-                backdrop-filter: none !important;
-            }
-
-            .preview-modal-window {
-                max-width: none !important;
-                max-height: none !important;
-                box-shadow: none !important;
-                border: none !important;
-                background: #ffffff !important;
-            }
-
-            .preview-modal-body {
-                padding: 0 !important;
-                background: #ffffff !important;
-                overflow: visible !important;
-            }
-
-            .a4-certificate-sheet {
-                width: 210mm !important;
-                height: 297mm !important;
-                box-shadow: none !important;
-                border: none !important;
-                margin: 0 auto !important;
-            }
         }
     </style>
 </head>
@@ -1225,7 +1154,7 @@
     <div id="siteHeader" class="site-header">
         <div class="brand-pill">OVI PRINTS DIGITAL PORTAL</div>
         <h1 id="headerTitle">जाति प्रमाण पत्र (Caste Certificate)</h1>
-        <p id="headerSubtitle">ऑनलाइन प्रमाण पत्र जनरेशन एवं कंबाइंड रिकॉर्ड पोर्टल</p>
+        <p id="headerSubtitle">ऑनलाइन प्रमाण पत्र जनरेशन एवं कंबाइंड रिकॉर्ड पोर्टल (caste.html एवं domicile.html एंबेडेड सपोर्ट)</p>
     </div>
 
     <!-- 3 मुख्य टैब: 1. जाति प्रमाण पत्र | 2. निवास प्रमाण पत्र | 3. कंबाइंड हिस्ट्री -->
@@ -1251,7 +1180,7 @@
 
             <div id="modeBanner" class="mode-indicator-bar mode-caste">
                 <span id="modeBannerText">वर्तमान चयन: जाति प्रमाण पत्र (Caste Certificate Form)</span>
-                <span style="font-size: 13px; font-weight: 500;">सबमिट करने पर स्वतः हिस्ट्री पेज खुलेगा</span>
+                <span style="font-size: 13px; font-weight: 500;">सबमिट करने पर स्वतः हिस्ट्री खुलेगी और पॉपअप में अलग फाइल एम्बेड होगी</span>
             </div>
 
             <!-- ऑटो-जनरेटेड 2 सर्टिफिकेट आईडी -->
@@ -1416,7 +1345,7 @@
 
             <!-- नया सबमिट हुआ रिकॉर्ड अलर्ट बैनर -->
             <div id="justSavedBanner" class="just-saved-banner">
-                <span id="justSavedText">✅ आपका रिकॉर्ड सफलतापूर्वक सेव हो गया है! नीचे लिस्ट में क्लिक करके उसका प्रीव्यू देखें।</span>
+                <span id="justSavedText">✅ आपका रिकॉर्ड सफलतापूर्वक सेव हो गया है! नीचे लिस्ट में क्लिक करके उसका एंबेडेड प्रीव्यू देखें।</span>
                 <button type="button" id="openLatestPreviewBtn" class="preview-btn" onclick="openLatestSavedPreview()">
                     👁️ अभी प्रीव्यू खोलें (Open Preview)
                 </button>
@@ -1438,13 +1367,13 @@
                     <thead>
                         <tr>
                             <th>फोटो</th>
-                            <th>प्रमाण पत्र प्रकार</th>
+                            <th>प्रमाण पत्र व फाइल</th>
                             <th>आवेदन / प्रमाण पत्र क्र०</th>
                             <th>तारीख</th>
                             <th>नाम (हिंदी / Eng)</th>
                             <th>पिता/पति व माता</th>
                             <th>जिला / तहसील / ग्राम</th>
-                            <th>प्रीव्यू / डाउनलोड / शेयर</th>
+                            <th>एंबेडेड प्रीव्यू (Popup)</th>
                         </tr>
                     </thead>
                     <tbody id="historyTableBody">
@@ -1458,13 +1387,13 @@
 </div>
 
 <!-- =========================================================
-     एंबेडेड सर्टिफिकेट प्रीव्यू पॉपअप मोडल (caste.html / domicile.html)
+     एंबेडेड सर्टिफिकेट प्रीव्यू पॉपअप मोडल (जिसमें अलग फाइल caste.html / domicile.html एम्बेड होती है)
      ========================================================= -->
 <div id="previewModal" class="preview-modal-overlay" onclick="handleOverlayClick(event)">
     <div class="preview-modal-window">
-        <!-- मोडल हेडर: एंबेडेड URL और 3 मुख्य बटन (Download A4, Print, Share) -->
+        <!-- मोडल हेडर: एंबेडेड फाइल URL और 3 मुख्य बटन (Download A4, Print, Share) -->
         <div class="preview-modal-header">
-            <div class="embedded-url-box" title="Embedded Certificate View URL">
+            <div class="embedded-url-box" title="Embedded Separate File URL">
                 <span class="dot"></span>
                 <span id="embeddedUrlDisplay">caste.html?appNo=...</span>
             </div>
@@ -1484,82 +1413,59 @@
             </div>
         </div>
 
-        <!-- मोडल बॉडी: A4 सर्टिफिकेट टेम्पलेट -->
+        <!-- एम्बेडेड आईफ्रेम: यहाँ अलग फाइल caste.html या domicile.html लोड होती है -->
+        <div class="iframe-embed-container">
+            <iframe id="certEmbedFrame" class="cert-embed-iframe" title="Embedded Certificate Preview"></iframe>
+        </div>
+
+        <!-- बैकअप रेंडर लेयर (पैरेंट लेवल PDF एक्सपोर्ट के लिए) -->
         <div class="preview-modal-body">
             <div id="a4CertificateSheet" class="a4-certificate-sheet">
                 <div class="cert-outer-frame">
                     <div id="certWatermark" class="cert-watermark">उत्तर प्रदेश शासन</div>
-
                     <div class="cert-content-layer">
-                        <!-- सर्टिफिकेट टॉप हेडर -->
                         <div class="cert-top-header">
-                            <div class="cert-emblem-box">
-                                <!-- अशोक स्तंभ शैली प्रतीक SVG -->
-                                <svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="32" cy="32" r="29" stroke="#1e3a8a" stroke-width="2.5" fill="#eff6ff"/>
-                                    <circle cx="32" cy="32" r="22" stroke="#1e3a8a" stroke-width="1.2" stroke-dasharray="3 2"/>
-                                    <path d="M32 13L37 25H27L32 13Z" fill="#1e3a8a"/>
-                                    <rect x="24" y="27" width="16" height="12" rx="2" fill="#1e3a8a"/>
-                                    <circle cx="32" cy="45" r="4" stroke="#1e3a8a" stroke-width="2"/>
-                                    <path d="M20 51H44" stroke="#1e3a8a" stroke-width="2.5" stroke-linecap="round"/>
-                                </svg>
-                            </div>
+                            <div class="cert-emblem-box">UP</div>
                             <div class="cert-title-center">
                                 <p class="gov-title">उत्तर प्रदेश शासन</p>
                                 <p class="dept-subtitle">ई-डिस्ट्रिक्ट परियोजना (राजस्व विभाग, उत्तर प्रदेश)</p>
                                 <div id="certMainHeading" class="main-cert-heading">जाति प्रमाण पत्र (CASTE CERTIFICATE)</div>
                             </div>
-                            <div class="cert-emblem-box">
-                                <div style="font-size: 11px; font-weight: 800; color: #1e3a8a; border: 1.5px solid #1e3a8a; border-radius: 6px; padding: 4px 6px;">
-                                    e-District<br>UP Portal
-                                </div>
-                            </div>
+                            <div class="cert-emblem-box">e-District</div>
                         </div>
-
-                        <!-- जनपद एवं तहसील पट्टी -->
                         <div class="cert-Location-strip">
                             <span>जनपद (District): <u id="certDistTop">बागपत</u></span>
                             <span>तहसील (Tehsil): <u id="certTehsilTop">बड़ौत</u></span>
                         </div>
-
-                        <!-- आवेदन क्र०, प्रमाण पत्र क्र० एवं दिनांक -->
                         <div class="cert-meta-grid">
                             <div class="cert-meta-item">
                                 <span class="m-lbl">आवेदन क्रमांक:</span>
-                                <strong id="certAppNo" class="m-val">261390020075432</strong>
+                                <strong id="certAppNo" class="m-val">-</strong>
                             </div>
                             <div class="cert-meta-item">
                                 <span class="m-lbl">जारी दिनांक:</span>
-                                <strong id="certIssueDate" class="m-val">18/10/2026</strong>
+                                <strong id="certIssueDate" class="m-val">-</strong>
                             </div>
                             <div class="cert-meta-item">
                                 <span class="m-lbl">प्रमाण पत्र क्रमांक:</span>
-                                <strong id="certCertNo" class="m-val">081262065432</strong>
+                                <strong id="certCertNo" class="m-val">-</strong>
                             </div>
                             <div class="cert-meta-item">
                                 <span class="m-lbl">सेवा केंद्र (VLE):</span>
-                                <strong id="certVleTop" class="m-val" style="font-family: inherit;">राहुल</strong>
+                                <strong id="certVleTop" class="m-val">-</strong>
                             </div>
                         </div>
-
-                        <!-- प्रमाण पत्र का मुख्य कथन और आवेदक फोटो -->
                         <div class="cert-body-row">
-                            <div id="certStatementBody" class="cert-Statement-text">
-                                <!-- JS द्वारा जाति या निवास के अनुसार भरा जाएगा -->
-                            </div>
+                            <div id="certStatementBody" class="cert-Statement-text"></div>
                             <div class="cert-photo-frame">
-                                <div id="certPhotoBox" class="cert-photo-box">
-                                    <span style="font-size: 11px; color: #64748b; text-align: center;">आवेदक<br>फोटो</span>
-                                </div>
+                                <div id="certPhotoBox" class="cert-photo-box"></div>
                                 <span class="cert-photo-caption">प्रमाणित फोटो</span>
                             </div>
                         </div>
-
-                        <!-- सारणीबद्ध प्रमाणित विवरण -->
                         <table class="cert-details-table">
                             <tbody>
                                 <tr>
-                                    <td class="lbl-col">आवेदक का नाम (हिंदी / English)</td>
+                                    <td class="lbl-col">आवेदक का नाम</td>
                                     <td class="val-col"><span id="tblNameHindi"></span> (<span id="tblNameEng"></span>)</td>
                                 </tr>
                                 <tr>
@@ -1571,7 +1477,7 @@
                                     <td id="tblMotherVal" class="val-col"></td>
                                 </tr>
                                 <tr>
-                                    <td class="lbl-col">स्थायी पता (मकान / मोहल्ला / ग्राम)</td>
+                                    <td class="lbl-col">स्थायी पता</td>
                                     <td id="tblAddressVal" class="val-col"></td>
                                 </tr>
                                 <tr>
@@ -1579,46 +1485,34 @@
                                     <td id="tblTehDistVal" class="val-col"></td>
                                 </tr>
                                 <tr id="tblCasteRow">
-                                    <td class="lbl-col">प्रमाणित जाति (Caste)</td>
+                                    <td class="lbl-col">प्रमाणित जाति / श्रेणी</td>
                                     <td id="tblCasteVal" class="val-col"></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-
-                    <!-- सर्टिफिकेट फुटर: QR कोड + VLE + SDM डिजिटल सिग्नेचर -->
                     <div class="cert-footer-section">
                         <div class="cert-sign-row">
                             <div class="cert-qr-left">
-                                <div id="certQrHolder" class="qr-box-holder">
-                                    <!-- डायनामिक SVG QR Code -->
-                                </div>
+                                <div id="certQrHolder" class="qr-box-holder"></div>
                                 <div class="vle-meta-info">
                                     <div><b>स्थान:</b> तहसील <span id="footTehsil"></span>, <span id="footDistrict"></span></div>
-                                    <div><b>जारी करने की तिथि:</b> <span id="footDate"></span></div>
-                                    <div><b>केंद्र संचालक (VLE):</b> <span id="footVle"></span></div>
+                                    <div><b>तिथि:</b> <span id="footDate"></span> | <b>VLE:</b> <span id="footVle"></span></div>
                                 </div>
                             </div>
-
                             <div class="cert-sdm-sign-box">
-                                <div class="sig-valid-header">
-                                    <span>✔ Digitally Signed</span>
-                                </div>
+                                <div class="sig-valid-header"><span>✔ Digitally Signed</span></div>
                                 <div id="certSdmName" class="sdm-name-bold">SUBHASH SINGH</div>
                                 <div class="sdm-post-line">
                                     सक्षम अधिकारी / उपजिलाधिकारी (SDM)<br>
-                                    तहसील: <span id="sigTehsil"></span>, जनपद: <span id="sigDistrict"></span><br>
-                                    दिनांक: <span id="sigDate"></span>
+                                    तहसील: <span id="sigTehsil"></span>, जनपद: <span id="sigDistrict"></span> | दिनांक: <span id="sigDate"></span>
                                 </div>
                             </div>
                         </div>
-
                         <div class="cert-bottom-note">
-                            यह प्रमाण पत्र इलेक्ट्रॉनिक डिलीवरी सिस्टम द्वारा तैयार किया गया है तथा डिजिटल हस्ताक्षर से प्रमाणित है।
                             आवेदन क्र० <b id="noteAppNo"></b> एवं प्रमाण पत्र क्र० <b id="noteCertNo"></b> द्वारा सत्यापित।
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -1792,7 +1686,7 @@
             siteHeader.className = "site-header";
             headerTitle.innerText = "जाति प्रमाण पत्र (Caste Certificate)";
             modeBanner.className = "mode-indicator-bar mode-caste";
-            modeBannerText.innerText = "📄 वर्तमान फॉर्म: जाति प्रमाण पत्र (Caste Certificate)";
+            modeBannerText.innerText = "📄 वर्तमान फॉर्म: जाति प्रमाण पत्र (Caste Certificate -> caste.html)";
             submitBtn.innerText = "जाति प्रमाण पत्र सेव करें और हिस्ट्री में जाएं (Save Caste Record)";
         } else if (tabName === "domicile") {
             currentFormType = "domicile";
@@ -1802,7 +1696,7 @@
             siteHeader.className = "site-header domicile-theme";
             headerTitle.innerText = "निवास प्रमाण पत्र (Domicile Certificate)";
             modeBanner.className = "mode-indicator-bar mode-domicile";
-            modeBannerText.innerText = "🏠 वर्तमान फॉर्म: निवास प्रमाण पत्र (Domicile Certificate)";
+            modeBannerText.innerText = "🏠 वर्तमान फॉर्म: निवास प्रमाण पत्र (Domicile Certificate -> domicile.html)";
             submitBtn.innerText = "निवास प्रमाण पत्र सेव करें और हिस्ट्री में जाएं (Save Domicile Record)";
         } else if (tabName === "history") {
             btnHistory.classList.add("active-history");
@@ -1865,7 +1759,6 @@
         if (clearBtn) clearBtn.style.display = "none";
     }
 
-    // LocalStorage Helpers
     function getLocalRecords() {
         try {
             return JSON.parse(localStorage.getItem(COLLECTION_NAME) || "[]");
@@ -1877,9 +1770,7 @@
     function setLocalRecords(records) {
         try {
             localStorage.setItem(COLLECTION_NAME, JSON.stringify(records));
-        } catch (e) {
-            // Ignore storage restriction errors in sandboxed iframes
-        }
+        } catch (e) {}
     }
 
     function showToast(msg) {
@@ -1892,7 +1783,6 @@
         }, 3200);
     }
 
-    // Initialize Firebase & Firestore
     function initFirebase() {
         try {
             if (typeof firebase !== "undefined") {
@@ -2039,6 +1929,7 @@
             createdAt: timestamp,
             certType: currentFormType, // 'caste' या 'domicile'
             certTypeLabel: currentFormType === "domicile" ? "निवास प्रमाण पत्र" : "जाति प्रमाण पत्र",
+            targetFile: currentFormType === "domicile" ? "domicile.html" : "caste.html",
             id1: currentId1,
             id2: currentId2,
             appNo: currentId1,
@@ -2066,7 +1957,6 @@
         history.push(record);
         setLocalRecords(history);
 
-        // तुरंत कैश अपडेट करें ताकि हिस्ट्री में तुरंत दिखे
         const existsInCache = recordsCache.some(r => r.id === record.id);
         if (!existsInCache) {
             recordsCache.unshift(record);
@@ -2077,16 +1967,16 @@
         if (db) {
             try {
                 await db.collection(COLLECTION_NAME).doc(record.id).set(record);
-                showToast("रिकॉर्ड सफलतापूर्वक सेव हो गया! हिस्ट्री खुल रही है...");
+                showToast("रिकॉर्ड सेव हो गया! कंबाइंड हिस्ट्री खुल रही है...");
             } catch (err) {
                 console.error("Firestore save error:", err);
-                showToast("रिकॉर्ड सेव हो गया! हिस्ट्री खुल रही है...");
+                showToast("रिकॉर्ड सेव हो गया! कंबाइंड हिस्ट्री खुल रही है...");
             }
         } else {
             showToast("रिकॉर्ड सफलतापूर्वक सेव हो गया!");
         }
 
-        // फॉर्म रीसेट करें और अगली एंट्री के लिए नई ID बनाएं
+        // फॉर्म रीसेट करें और नई ID बनाएं
         document.getElementById("nameEng").value = "";
         document.getElementById("nameHindi").value = "";
         document.getElementById("guardianName").value = "";
@@ -2099,11 +1989,10 @@
         submitBtn.disabled = false;
         submitBtn.innerText = originalBtnText;
 
-        // बैनर दिखाएं और सीधे कंबाइंड हिस्ट्री टैब पर रीडायरेक्ट करें
         const banner = document.getElementById("justSavedBanner");
         const bannerText = document.getElementById("justSavedText");
         if (banner && bannerText) {
-            bannerText.innerText = `✅ ${record.nameHindi} (${record.certTypeLabel}) का डेटा सेव हो गया है! प्रीव्यू देखने के लिए क्लिक करें।`;
+            bannerText.innerText = `✅ ${record.nameHindi} (${record.certTypeLabel} — ${record.targetFile}) सेव हो गया है! प्रीव्यू देखने के लिए क्लिक करें।`;
             banner.classList.add("active");
         }
 
@@ -2179,9 +2068,10 @@
                 : `<div class="no-thumb">No<br>Photo</div>`;
 
             const isDomicile = rec.certType === "domicile";
+            const fileNameBadge = isDomicile ? "domicile.html" : "caste.html";
             const typeBadge = isDomicile
-                ? `<span class="type-badge type-domicile">🏠 निवास प्रमाण पत्र</span>`
-                : `<span class="type-badge type-caste">📄 जाति प्रमाण पत्र</span>`;
+                ? `<span class="type-badge type-domicile">🏠 निवास प्रमाण पत्र</span><br><small style="font-family:monospace; color:#0f766e; font-weight:700;">${fileNameBadge}</small>`
+                : `<span class="type-badge type-caste">📄 जाति प्रमाण पत्र</span><br><small style="font-family:monospace; color:#1e40af; font-weight:700;">${fileNameBadge}</small>`;
 
             const id1Text = rec.id1 || rec.appNo || "N/A";
             const id2Text = rec.id2 || rec.certNo || "N/A";
@@ -2220,8 +2110,7 @@
         });
     }
 
-    // डायनामिक QR SVG जनरेटर (सर्टिफिकेट वेरिफिकेशन के लिए)
-    function generateQrSvg(seedText) {
+    function generateQrSvg(seedText, colorHex) {
         let hash = 2166136261;
         for (let i = 0; i < seedText.length; i++) {
             hash ^= seedText.charCodeAt(i);
@@ -2237,14 +2126,152 @@
                     (r >= size - 3 && c < 3);
                 const bit = ((hash >> ((r * size + c) % 24)) & 1) === 1;
                 if (isFinder || bit) {
-                    rects += `<rect x="${c * 6 + 4}" y="${r * 6 + 4}" width="5" height="5" fill="#0f172a"/>`;
+                    rects += `<rect x="${c * 6 + 4}" y="${r * 6 + 4}" width="5" height="5" fill="${colorHex || '#0f172a'}"/>`;
                 }
             }
         }
         return `<svg width="74" height="74" viewBox="0 0 74 74" xmlns="http://www.w3.org/2000/svg">${rects}</svg>`;
     }
 
-    // पॉपअप के अंदर caste.html / domicile.html प्रीव्यू लोड और ओपन करना
+    // अलग फाइल (caste.html या domicile.html) का एंबेडेड HTML जनरेट करना (ताकि सैंडबॉक्स और लोकल दोनों में <iframe> 100% काम करे)
+    function buildEmbeddedCertificateHtml(rec) {
+        const isDomicile = rec.certType === "domicile";
+        const themeColor = isDomicile ? "#0f766e" : "#1e3a8a";
+        const softBg = isDomicile ? "#f0fdfa" : "#eff6ff";
+        const borderSoft = isDomicile ? "#99f6e4" : "#bfdbfe";
+        const watermarkText = isDomicile ? "निवास प्रमाण पत्र • उत्तर प्रदेश" : "जाति प्रमाण पत्र • उत्तर प्रदेश";
+        const certHeading = isDomicile ? "निवास प्रमाण पत्र (DOMICILE CERTIFICATE)" : "जाति प्रमाण पत्र (CASTE CERTIFICATE)";
+        const certTypeRowVal = isDomicile ? "सामान्य निवास प्रमाण पत्र (Domicile Certificate)" : "जाति प्रमाण पत्र (Caste Certificate)";
+        const qrSvg = generateQrSvg(`${isDomicile ? 'DOM' : 'CASTE'}-${rec.id1}-${rec.id2}-${rec.nameEng}`, themeColor);
+
+        const statementHtml = isDomicile
+            ? `प्रमाणित किया जाता है कि <b>${rec.nameHindi || ""}</b> (<b>${rec.nameEng || ""}</b>),
+               ${rec.relation || "पुत्र/पुत्री"} श्री <b>${rec.guardianName || ""}</b>,
+               माता का नाम श्रीमती <b>${rec.motherName || ""}</b>,
+               निवासी मकान नं० / मोहल्ला <b>${rec.mohalla || ""}</b>,
+               ग्राम <b>${rec.village || ""}</b>, तहसील <b>${rec.tehsil || ""}</b>,
+               जनपद <b>${rec.district || ""}</b> (उत्तर प्रदेश) के स्थायी निवासी हैं।<br><br>
+               यह सामान्य निवास प्रमाण पत्र क्षेत्रीय लेखपाल एवं राजस्व निरीक्षक की जांच आख्या के आधार पर जारी किया जाता है।`
+            : `प्रमाणित किया जाता है कि <b>${rec.nameHindi || ""}</b> (<b>${rec.nameEng || ""}</b>),
+               ${rec.relation || "पुत्र/पुत्री"} श्री <b>${rec.guardianName || ""}</b>,
+               माता का नाम श्रीमती <b>${rec.motherName || ""}</b>,
+               निवासी मकान नं० / मोहल्ला <b>${rec.mohalla || ""}</b>,
+               ग्राम <b>${rec.village || ""}</b>, तहसील <b>${rec.tehsil || ""}</b>,
+               जनपद <b>${rec.district || ""}</b> (उत्तर प्रदेश) के निवासी हैं तथा यह पिछड़ी / अनुसूचित जाति के अंतर्गत
+               <b>${rec.caste || ""}</b> जाति के व्यक्ति हैं।<br><br>
+               यह प्रमाण पत्र उत्तर प्रदेश शासन द्वारा निर्धारित नियमों एवं क्षेत्रीय जांच आख्या के आधार पर जारी किया गया है।`;
+
+        const photoInner = rec.photo
+            ? `<img src="${rec.photo}" alt="Applicant Photo" style="width:100%;height:100%;object-fit:cover;">`
+            : `<span style="font-size:11px;color:#64748b;text-align:center;">आवेदक<br>फोटो</span>`;
+
+        const lastRowLabel = isDomicile ? "निवास की श्रेणी / समुदाय" : "प्रमाणित जाति (Caste)";
+        const lastRowVal = isDomicile ? `स्थायी निवासी (उत्तर प्रदेश) — समुदाय: ${rec.caste || "-"}` : (rec.caste || "-");
+
+        return `<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;}
+body{margin:0;padding:18px 10px;background:#cbd5e1;font-family:'Noto Sans Devanagari','Inter',sans-serif;display:flex;justify-content:center;}
+.a4-sheet{width:210mm;min-height:292mm;background:#fff;color:#000;padding:12mm 14mm;box-shadow:0 10px 30px rgba(15,23,42,0.28);border:1px solid #94a3b8;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0;}
+.frame{border:3px double ${themeColor};padding:8mm 9mm;min-height:266mm;display:flex;flex-direction:column;justify-content:space-between;position:relative;}
+.wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-28deg);font-size:50px;font-weight:800;color:rgba(15,23,42,0.05);white-space:nowrap;pointer-events:none;z-index:0;}
+.layer{position:relative;z-index:1;}
+.top-hdr{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid ${themeColor};padding-bottom:10px;margin-bottom:12px;}
+.gov-t{font-size:20px;font-weight:800;color:${themeColor};margin:0;}
+.dept-s{font-size:13px;font-weight:600;color:#334155;margin:3px 0 6px;}
+.main-h{display:inline-block;background:${themeColor};color:#fff;font-size:18px;font-weight:800;padding:4px 20px;border-radius:6px;}
+.loc-strip{display:flex;justify-content:space-between;background:${softBg};border:1px solid ${borderSoft};padding:7px 14px;border-radius:6px;font-size:14px;font-weight:700;color:${themeColor};margin-bottom:12px;}
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin-bottom:16px;font-size:14px;border-bottom:1px dashed #94a3b8;padding-bottom:12px;}
+.body-row{display:flex;justify-content:space-between;gap:18px;margin-bottom:16px;align-items:flex-start;}
+.stmt{flex:1;font-size:15.5px;line-height:1.85;text-align:justify;color:#0f172a;}
+.stmt b{font-weight:800;text-decoration:underline;text-underline-offset:3px;}
+.p-box{width:106px;height:128px;border:2px solid ${themeColor};padding:3px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+table.dt{width:100%;border-collapse:collapse;margin:12px 0 18px;font-size:14px;}
+table.dt td{border:1px solid #cbd5e1;padding:8px 12px;}
+table.dt td.l{width:35%;background:${softBg};font-weight:700;color:#1e293b;}
+table.dt td.v{font-weight:600;color:#0f172a;}
+.ftr{position:relative;z-index:1;margin-top:18px;padding-top:14px;border-top:2px solid ${themeColor};}
+.sign-row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;}
+.sdm-box{border:1.5px solid #059669;background:#f0fdf4;border-radius:8px;padding:10px 16px;min-width:245px;}
+@media print{@page{size:A4 portrait;margin:0;}body{background:#fff;padding:0;}.a4-sheet{box-shadow:none;border:none;width:210mm;height:297mm;}}
+</style>
+</head>
+<body>
+<div class="a4-sheet">
+  <div class="frame">
+    <div class="wm">${watermarkText}</div>
+    <div class="layer">
+      <div class="top-hdr">
+        <div style="width:64px;text-align:center;">
+          <svg width="52" height="52" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="29" stroke="${themeColor}" stroke-width="2.5" fill="${softBg}"/><path d="M32 13L37 25H27L32 13Z" fill="${themeColor}"/><rect x="24" y="27" width="16" height="12" rx="2" fill="${themeColor}"/><circle cx="32" cy="45" r="4" stroke="${themeColor}" stroke-width="2"/><path d="M20 51H44" stroke="${themeColor}" stroke-width="2.5"/></svg>
+        </div>
+        <div style="text-align:center;flex:1;">
+          <p class="gov-t">उत्तर प्रदेश शासन</p>
+          <p class="dept-s">ई-डिस्ट्रिक्ट परियोजना (राजस्व विभाग, उत्तर प्रदेश)</p>
+          <div class="main-h">${certHeading}</div>
+        </div>
+        <div style="width:68px;text-align:center;font-size:11px;font-weight:800;color:${themeColor};border:1.5px solid ${themeColor};border-radius:6px;padding:4px;">e-District<br>UP Portal</div>
+      </div>
+      <div class="loc-strip">
+        <span>जनपद (District): <u>${rec.district || ""}</u></span>
+        <span>तहसील (Tehsil): <u>${rec.tehsil || ""}</u></span>
+      </div>
+      <div class="meta-grid">
+        <div><b>आवेदन क्रमांक:</b> <span style="font-family:monospace;font-size:15px;font-weight:800;">${rec.id1 || ""}</span></div>
+        <div><b>जारी दिनांक:</b> <span style="font-family:monospace;font-size:15px;font-weight:800;">${rec.date || ""}</span></div>
+        <div><b>प्रमाण पत्र क्रमांक:</b> <span style="font-family:monospace;font-size:15px;font-weight:800;">${rec.id2 || ""}</span></div>
+        <div><b>सेवा केंद्र (VLE):</b> <b>${rec.vle || ""}</b></div>
+      </div>
+      <div class="body-row">
+        <div class="stmt">${statementHtml}</div>
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="p-box">${photoInner}</div>
+          <span style="font-size:11px;color:#475569;margin-top:4px;font-weight:600;">प्रमाणित फोटो</span>
+        </div>
+      </div>
+      <table class="dt">
+        <tbody>
+          <tr><td class="l">प्रमाण पत्र का प्रकार</td><td class="v" style="color:${themeColor};font-weight:800;">${certTypeRowVal}</td></tr>
+          <tr><td class="l">आवेदक का नाम (हिंदी / English)</td><td class="v">${rec.nameHindi || ""} (${rec.nameEng || ""})</td></tr>
+          <tr><td class="l">${rec.relation === "पत्नी" ? "पति का नाम" : "पिता का नाम"}</td><td class="v">श्री ${rec.guardianName || ""}</td></tr>
+          <tr><td class="l">माता का नाम</td><td class="v">श्रीमती ${rec.motherName || ""}</td></tr>
+          <tr><td class="l">स्थायी पता (मकान / मोहल्ला / ग्राम)</td><td class="v">मोहल्ला/मकान: ${rec.mohalla || ""}, ग्राम: ${rec.village || ""}</td></tr>
+          <tr><td class="l">तहसील एवं जनपद</td><td class="v">तहसील: ${rec.tehsil || ""}, जनपद: ${rec.district || ""} (उ०प्र०)</td></tr>
+          <tr><td class="l">${lastRowLabel}</td><td class="v" style="font-weight:800;">${lastRowVal}</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ftr">
+      <div class="sign-row">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:84px;height:84px;border:1px solid #64748b;padding:4px;background:#fff;display:flex;align-items:center;justify-content:center;">${qrSvg}</div>
+          <div style="font-size:12.5px;line-height:1.55;">
+            <div><b>स्थान:</b> तहसील ${rec.tehsil || ""}, ${rec.district || ""}</div>
+            <div><b>जारी करने की तिथि:</b> ${rec.date || ""}</div>
+            <div><b>केंद्र संचालक (VLE):</b> ${rec.vle || ""}</div>
+          </div>
+        </div>
+        <div class="sdm-box">
+          <div style="color:#059669;font-weight:800;font-size:12px;margin-bottom:4px;">✔ DIGITALLY SIGNED</div>
+          <div style="font-size:15px;font-weight:800;color:#0f172a;">${(rec.sdmName || "SUBHASH SINGH").toUpperCase()}</div>
+          <div style="font-size:12px;color:#334155;font-weight:600;line-height:1.4;">सक्षम अधिकारी / उपजिलाधिकारी (SDM)<br>तहसील: ${rec.tehsil || ""}, जनपद: ${rec.district || ""}<br>दिनांक: ${rec.date || ""}</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding-top:8px;border-top:1px solid #cbd5e1;font-size:11px;color:#475569;text-align:center;">
+        यह प्रमाण पत्र इलेक्ट्रॉनिक डिलीवरी सिस्टम द्वारा तैयार किया गया है तथा डिजिटल हस्ताक्षर से प्रमाणित है। आवेदन क्र० <b>${rec.id1 || ""}</b> एवं प्रमाण पत्र क्र० <b>${rec.id2 || ""}</b> द्वारा सत्यापित।
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>`;
+    }
+
+    // पॉपअप के अंदर अलग फाइल (caste.html या domicile.html) को एम्बेड करके दिखाना
     function openPreviewModal(recordId) {
         const list = getCombinedList();
         const rec = list.find(item => item.id === recordId);
@@ -2256,12 +2283,13 @@
         activePreviewRecord = rec;
         const isDomicile = rec.certType === "domicile";
         const queryString = buildQueryParams(rec);
-        const virtualPageName = isDomicile ? "domicile.html" : "caste.html";
+        const targetFileName = isDomicile ? "domicile.html" : "caste.html";
+        const fullTargetUrl = `${targetFileName}?${queryString}`;
 
-        // Embedded URL दिखाएं
-        document.getElementById("embeddedUrlDisplay").innerText = `${virtualPageName}?${queryString}`;
+        // पॉपअप के URL बार में अलग फाइल का URL दिखाएं (caste.html?... या domicile.html?...)
+        document.getElementById("embeddedUrlDisplay").innerText = fullTargetUrl;
 
-        // हेडर और शीर्षक अपडेट करें
+        // बैकअप हिडन शीट को भी अपडेट करें (पैरेंट PDF डाउनलोड के लिए)
         const headingEl = document.getElementById("certMainHeading");
         if (isDomicile) {
             headingEl.innerText = "निवास प्रमाण पत्र (DOMICILE CERTIFICATE)";
@@ -2270,75 +2298,57 @@
             headingEl.innerText = "जाति प्रमाण पत्र (CASTE CERTIFICATE)";
             headingEl.style.background = "#1e3a8a";
         }
-
         document.getElementById("certDistTop").innerText = rec.district || "";
         document.getElementById("certTehsilTop").innerText = rec.tehsil || "";
         document.getElementById("certAppNo").innerText = rec.id1 || rec.appNo || "";
         document.getElementById("certCertNo").innerText = rec.id2 || rec.certNo || "";
         document.getElementById("certIssueDate").innerText = rec.date || "";
         document.getElementById("certVleTop").innerText = rec.vle || "";
-
-        // मुख्य प्रमाणित हिंदी पैराग्राफ
-        const statementEl = document.getElementById("certStatementBody");
-        if (isDomicile) {
-            statementEl.innerHTML = `
-                प्रमाणित किया जाता है कि <b>${rec.nameHindi || ""}</b> (<b>${rec.nameEng || ""}</b>),
-                ${rec.relation || "पुत्र/पुत्री"} श्री <b>${rec.guardianName || ""}</b>,
-                माता का नाम श्रीमती <b>${rec.motherName || ""}</b>,
-                निवासी मकान नं० / मोहल्ला <b>${rec.mohalla || ""}</b>,
-                ग्राम <b>${rec.village || ""}</b>, तहसील <b>${rec.tehsil || ""}</b>,
-                जनपद <b>${rec.district || ""}</b> (उत्तर प्रदेश) के स्थायी निवासी हैं।<br><br>
-                यह प्रमाण पत्र क्षेत्रीय लेखपाल एवं राजस्व निरीक्षक की जांच आख्या के आधार पर जारी किया जाता है।
-            `;
-        } else {
-            statementEl.innerHTML = `
-                प्रमाणित किया जाता है कि <b>${rec.nameHindi || ""}</b> (<b>${rec.nameEng || ""}</b>),
-                ${rec.relation || "पुत्र/पुत्री"} श्री <b>${rec.guardianName || ""}</b>,
-                माता का नाम श्रीमती <b>${rec.motherName || ""}</b>,
-                निवासी मकान नं० / मोहल्ला <b>${rec.mohalla || ""}</b>,
-                ग्राम <b>${rec.village || ""}</b>, तहसील <b>${rec.tehsil || ""}</b>,
-                जनपद <b>${rec.district || ""}</b> (उत्तर प्रदेश) के निवासी हैं तथा यह पिछड़ी / अनुसूचित जाति के अंतर्गत
-                <b>${rec.caste || ""}</b> जाति के व्यक्ति हैं।<br><br>
-                यह प्रमाण पत्र उत्तर प्रदेश शासन द्वारा निर्धारित नियमों एवं क्षेत्रीय जांच आख्या के आधार पर जारी किया गया है।
-            `;
-        }
-
-        // टेबल विवरण भरें
         document.getElementById("tblNameHindi").innerText = rec.nameHindi || "";
         document.getElementById("tblNameEng").innerText = rec.nameEng || "";
-        document.getElementById("tblGuardianLbl").innerText = rec.relation === "पत्नी" ? "पति का नाम (Husband's Name)" : "पिता का नाम (Father's Name)";
+        document.getElementById("tblGuardianLbl").innerText = rec.relation === "पत्नी" ? "पति का नाम" : "पिता का नाम";
         document.getElementById("tblGuardianVal").innerText = `श्री ${rec.guardianName || ""}`;
         document.getElementById("tblMotherVal").innerText = `श्रीमती ${rec.motherName || ""}`;
         document.getElementById("tblAddressVal").innerText = `मोहल्ला/मकान: ${rec.mohalla || ""}, ग्राम: ${rec.village || ""}`;
         document.getElementById("tblTehDistVal").innerText = `तहसील: ${rec.tehsil || ""}, जनपद: ${rec.district || ""} (उ०प्र०)`;
         document.getElementById("tblCasteVal").innerText = rec.caste || "";
-
-        // फोटो बॉक्स अपडेट करें
         const photoBox = document.getElementById("certPhotoBox");
-        if (rec.photo) {
-            photoBox.innerHTML = `<img src="${rec.photo}" alt="Applicant Photo">`;
-        } else {
-            photoBox.innerHTML = `<span style="font-size: 11px; color: #64748b; text-align: center;">आवेदक<br>फोटो</span>`;
-        }
-
-        // फुटर व SDM विवरण भरें
+        photoBox.innerHTML = rec.photo ? `<img src="${rec.photo}" alt="Photo">` : `<span>फोटो</span>`;
         document.getElementById("footTehsil").innerText = rec.tehsil || "";
         document.getElementById("footDistrict").innerText = rec.district || "";
         document.getElementById("footDate").innerText = rec.date || "";
         document.getElementById("footVle").innerText = rec.vle || "";
-
         document.getElementById("certSdmName").innerText = (rec.sdmName || "SUBHASH SINGH").toUpperCase();
         document.getElementById("sigTehsil").innerText = rec.tehsil || "";
         document.getElementById("sigDistrict").innerText = rec.district || "";
         document.getElementById("sigDate").innerText = rec.date || "";
-
         document.getElementById("noteAppNo").innerText = rec.id1 || "";
         document.getElementById("noteCertNo").innerText = rec.id2 || "";
+        document.getElementById("certQrHolder").innerHTML = generateQrSvg(`${rec.id1}-${rec.id2}`, "#1e3a8a");
 
-        // QR Code बनाएं
-        document.getElementById("certQrHolder").innerHTML = generateQrSvg(`${rec.id1}-${rec.id2}-${rec.nameEng}`);
+        // <iframe> में अलग फाइल (caste.html या domicile.html) लोड करना
+        const iframe = document.getElementById("certEmbedFrame");
+        const isIsolatedPreview =
+            window.location.protocol === "about:" ||
+            window.location.protocol === "blob:" ||
+            window.location.protocol === "data:" ||
+            window.location.hostname.includes("usercontent.goog");
 
-        // मोडल खोलें
+        if (isIsolatedPreview) {
+            // सैंडबॉक्स प्रीव्यू में srcdoc से अलग फाइल का टेम्पलेट रेंडर करें
+            iframe.removeAttribute("src");
+            iframe.srcdoc = buildEmbeddedCertificateHtml(rec);
+        } else {
+            // असली होस्टिंग/फोल्डर में सीधे अलग फाइल caste.html या domicile.html को लोड करें
+            iframe.removeAttribute("srcdoc");
+            iframe.src = fullTargetUrl;
+            iframe.onload = function() {
+                try {
+                    iframe.contentWindow.postMessage({ type: "LOAD_CERT_RECORD", record: rec }, "*");
+                } catch (e) {}
+            };
+        }
+
         document.getElementById("previewModal").classList.add("active");
     }
 
@@ -2355,7 +2365,7 @@
     // 1. A4 साइज में PDF डाउनलोड करने का फंक्शन
     async function downloadCertificateA4() {
         if (!activePreviewRecord) return;
-        const element = document.getElementById("a4CertificateSheet");
+        const iframe = document.getElementById("certEmbedFrame");
         const btn = document.getElementById("downloadPdfBtn");
         const originalText = btn.innerText;
         btn.disabled = true;
@@ -2364,7 +2374,12 @@
         const fileName = `${activePreviewRecord.certType === "domicile" ? "Domicile" : "Caste"}_${(activePreviewRecord.nameEng || "Certificate").replace(/\s+/g, "_")}_${activePreviewRecord.id2 || "A4"}.pdf`;
 
         try {
-            if (typeof html2pdf !== "undefined") {
+            // एंबेडेड आईफ्रेम के अंदर की A4 शीट से सीधे A4 PDF बनाएं
+            const targetSheet =
+                (iframe && iframe.contentDocument && iframe.contentDocument.querySelector(".a4-sheet, #a4CertificateSheet")) ||
+                document.getElementById("a4CertificateSheet");
+
+            if (typeof html2pdf !== "undefined" && targetSheet) {
                 const opt = {
                     margin: 0,
                     filename: fileName,
@@ -2372,14 +2387,14 @@
                     html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
                     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
                 };
-                await html2pdf().set(opt).from(element).save();
+                await html2pdf().set(opt).from(targetSheet).save();
                 showToast("✅ A4 PDF सफलतापूर्वक डाउनलोड हो गया!");
-            } else {
-                window.print();
+            } else if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({ type: "TRIGGER_DOWNLOAD_PDF" }, "*");
             }
         } catch (err) {
             console.error("PDF download error:", err);
-            window.print();
+            printCertificateA4();
         } finally {
             btn.disabled = false;
             btn.innerText = originalText;
@@ -2388,16 +2403,28 @@
 
     // 2. A4 साइज में प्रिंट करने का फंक्शन
     function printCertificateA4() {
+        const iframe = document.getElementById("certEmbedFrame");
+        if (iframe && iframe.contentWindow) {
+            try {
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+                return;
+            } catch (e) {}
+        }
         window.print();
     }
 
-    // 3. सर्टिफिकेट शेयर करने का फंक्शन (Web Share API + Clipboard Fallback)
+    // 3. सर्टिफिकेट शेयर करने का फंक्शन (अलग फाइल लिंक के साथ)
     async function shareCertificate() {
         if (!activePreviewRecord) return;
         const rec = activePreviewRecord;
-        const certTitle = rec.certType === "domicile" ? "निवास प्रमाण पत्र (Domicile Certificate)" : "जाति प्रमाण पत्र (Caste Certificate)";
+        const isDomicile = rec.certType === "domicile";
+        const certTitle = isDomicile ? "निवास प्रमाण पत्र (Domicile Certificate)" : "जाति प्रमाण पत्र (Caste Certificate)";
+        const targetFile = isDomicile ? "domicile.html" : "caste.html";
+        const queryStr = buildQueryParams(rec);
+        const baseDir = window.location.href.split("?")[0].replace(/[^/]*$/, "");
+        const shareUrl = `${baseDir}${targetFile}?${queryStr}`;
         const shareSummary = `${certTitle}\nनाम: ${rec.nameHindi} (${rec.nameEng})\nआवेदन क्र०: ${rec.id1}\nप्रमाण पत्र क्र०: ${rec.id2}\nजिला/तहसील: ${rec.district} (${rec.tehsil})\nदिनांक: ${rec.date}`;
-        const shareUrl = window.location.href.split("?")[0] + "?" + buildQueryParams(rec);
 
         if (navigator.share) {
             try {
@@ -2408,13 +2435,10 @@
                 });
                 showToast("✅ सफलतापूर्वक शेयर किया गया!");
                 return;
-            } catch (err) {
-                // यूजर द्वारा कैंसिल या एरर होने पर क्लिपबोर्ड फॉलबैक
-            }
+            } catch (err) {}
         }
 
-        // Clipboard Fallback
-        const fullCopyText = `${shareSummary}\nलिंक: ${shareUrl}`;
+        const fullCopyText = `${shareSummary}\nलिंक: ${targetFile}?${queryStr}`;
         try {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 await navigator.clipboard.writeText(fullCopyText);
@@ -2426,7 +2450,7 @@
                 document.execCommand("copy");
                 document.body.removeChild(tempInput);
             }
-            showToast("📋 सर्टिफिकेट विवरण और लिंक कॉपी हो गया! अब कहीं भी पेस्ट/शेयर करें।");
+            showToast(`📋 ${targetFile} का लिंक और विवरण कॉपी हो गया!`);
         } catch (e) {
             showToast("शेयर विवरण तैयार है!");
         }
@@ -2445,33 +2469,6 @@
         updateBadgeCount();
         renderHistory();
         initFirebase();
-
-        // यदि URL में पहले से किसी सर्टिफिकेट के पैरामीटर हों तो सीधे उसका पॉपअप प्रीव्यू दिखाएं
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get("appNo") || urlParams.get("id1")) {
-            const urlRec = {
-                id: urlParams.get("id") || "URL-REC",
-                certType: urlParams.get("type") || "caste",
-                id1: urlParams.get("id1") || urlParams.get("appNo") || "",
-                id2: urlParams.get("id2") || urlParams.get("certNo") || "",
-                district: urlParams.get("district") || "",
-                tehsil: urlParams.get("tehsil") || "",
-                nameEng: urlParams.get("nameEng") || "",
-                nameHindi: urlParams.get("nameHindi") || "",
-                relation: urlParams.get("relation") || "पुत्र/पुत्री",
-                guardianName: urlParams.get("guardianName") || "",
-                motherName: urlParams.get("motherName") || "",
-                mohalla: urlParams.get("mohalla") || "",
-                village: urlParams.get("village") || "",
-                caste: urlParams.get("caste") || "",
-                vle: urlParams.get("vle") || "",
-                date: urlParams.get("date") || "",
-                sdmName: urlParams.get("sdmName") || ""
-            };
-            recordsCache.unshift(urlRec);
-            switchTab("history");
-            openPreviewModal(urlRec.id);
-        }
     };
 </script>
 
