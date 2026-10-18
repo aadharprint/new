@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OVI PRINTS</title>
+    <title>OVI PRINTS - जाति एवं निवास प्रमाण पत्र पोर्टल</title>
     <!-- Google Fonts: Inter & Noto Sans Devanagari -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1154,18 +1154,19 @@
     <div id="siteHeader" class="site-header">
         <div class="brand-pill">OVI PRINTS DIGITAL PORTAL</div>
         <h1 id="headerTitle">जाति प्रमाण पत्र (Caste Certificate)</h1>
+        <p id="headerSubtitle">ऑनलाइन प्रमाण पत्र जनरेशन एवं कंबाइंड रिकॉर्ड पोर्टल (caste.html एवं domicile.html एंबेडेड सपोर्ट)</p>
     </div>
 
     <!-- 3 मुख्य टैब: 1. जाति प्रमाण पत्र | 2. निवास प्रमाण पत्र | 3. कंबाइंड हिस्ट्री -->
     <div class="nav-tabs-bar">
         <button type="button" id="tabBtnCaste" class="nav-tab-btn active-caste" onclick="switchTab('caste')">
-            <span>📄(Caste)</span>
+            <span>📄 जाति प्रमाण पत्र (Caste)</span>
         </button>
         <button type="button" id="tabBtnDomicile" class="nav-tab-btn" onclick="switchTab('domicile')">
-            <span>🏠(Domicile)</span>
+            <span>🏠 निवास प्रमाण पत्र (Domicile)</span>
         </button>
         <button type="button" id="tabBtnHistory" class="nav-tab-btn" onclick="switchTab('history')">
-            <span>🗂️(All Records)</span>
+            <span>🗂️ कंबाइंड हिस्ट्री (All Records)</span>
             <span id="totalRecordsBadge" class="tab-count-badge">0</span>
         </button>
     </div>
@@ -1176,6 +1177,11 @@
              टैब 1 और टैब 2: फॉर्म व्यू (Caste & Domicile)
              ========================================== -->
         <div id="formPane" class="tab-pane active">
+
+            <div id="modeBanner" class="mode-indicator-bar mode-caste">
+                <span id="modeBannerText">वर्तमान चयन: जाति प्रमाण पत्र (Caste Certificate Form)</span>
+                <span style="font-size: 13px; font-weight: 500;">सबमिट करने पर स्वतः हिस्ट्री खुलेगी और पॉपअप में अलग फाइल एम्बेड होगी</span>
+            </div>
 
             <!-- ऑटो-जनरेटेड 2 सर्टिफिकेट आईडी -->
             <div class="id-banner">
@@ -1339,9 +1345,9 @@
 
             <!-- नया सबमिट हुआ रिकॉर्ड अलर्ट बैनर -->
             <div id="justSavedBanner" class="just-saved-banner">
-                <span id="justSavedText">✅ आपका रिकॉर्ड सफलतापूर्वक सेव हो गया है!</span>
+                <span id="justSavedText">✅ आपका रिकॉर्ड सफलतापूर्वक सेव हो गया है! नीचे लिस्ट में क्लिक करके उसका एंबेडेड प्रीव्यू देखें।</span>
                 <button type="button" id="openLatestPreviewBtn" class="preview-btn" onclick="openLatestSavedPreview()">
-                    👁️ Open Preview
+                    👁️ अभी प्रीव्यू खोलें (Open Preview)
                 </button>
             </div>
 
@@ -1387,18 +1393,22 @@
     <div class="preview-modal-window">
         <!-- मोडल हेडर: एंबेडेड फाइल URL और 3 मुख्य बटन (Download A4, Print, Share) -->
         <div class="preview-modal-header">
+            <div class="embedded-url-box" title="Embedded Separate File URL">
+                <span class="dot"></span>
+                <span id="embeddedUrlDisplay">caste.html?appNo=...</span>
+            </div>
             <div class="modal-toolbar-actions">
                 <button type="button" id="downloadPdfBtn" class="toolbar-btn btn-download-pdf" onclick="downloadCertificateA4()">
-                    ⬇️ PDF
+                    ⬇️ A4 डाउनलोड (PDF)
                 </button>
                 <button type="button" class="toolbar-btn btn-print-cert" onclick="printCertificateA4()">
-                    🖨️ Print
+                    🖨️ प्रिंट करें (Print)
                 </button>
                 <button type="button" class="toolbar-btn btn-share-cert" onclick="shareCertificate()">
-                    📤Share
+                    📤 शेयर करें (Share)
                 </button>
                 <button type="button" class="toolbar-btn btn-close-modal" onclick="closePreviewModal()">
-                    ✖ Close
+                    ✖ बंद करें
                 </button>
             </div>
         </div>
