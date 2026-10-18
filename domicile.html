@@ -50,6 +50,20 @@
         .act-btn:hover {
             background: #e2e8f0;
         }
+
+	 /* वाटरमार्क की CSS स्टाइलिंग */
+        .watermark-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 380px;
+            height: 380px;
+            opacity: 100; /* आवश्यकतानुसार हल्का या गहरा करने के लिए इसे बदलें (0.1 से 0.3) */
+            z-index: 0;
+            pointer-events: none;
+        }
+
         .a4-certificate-sheet {
             width: 210mm;
             max-width: 100%;
@@ -103,17 +117,10 @@
 </head>
 <body>
 
-    <!-- टॉप बार: डाउनलोड, प्रिंट, शेयर -->
-    <div id="topActionBar" class="top-action-bar">
-        <div style="font-size: 13px; font-weight: bold;">domicile.html — निवास प्रमाण पत्र</div>
-        <div class="bar-actions">
-            <button type="button" id="downloadPdfBtn" class="act-btn" onclick="downloadCertificateA4()">⬇️ A4 डाउनलोड (PDF)</button>
-            <button type="button" class="act-btn" onclick="printCertificateA4()">🖨️ प्रिंट करें (Print)</button>
-            <button type="button" class="act-btn" onclick="shareCertificate()">📤 शेयर करें (Share)</button>
-        </div>
-    </div>
+
 
     <div id="a4CertificateSheet" class="a4-certificate-sheet">
+  <img src="GOVERNMENT_MONOGRAM.gif" class="watermark-bg" alt="Watermark">
         <table class="mgn" border="0" align="center" width="94%" cellspacing="0" cellpadding="0" style="border: 1px solid #000000; padding-left: 6px; padding-right: 6px; padding-top: 2px; padding-bottom: 4px; font-size: 10pt; font-family: Arial Unicode MS, Arial, sans-serif; position: relative; z-index: 1;">
             <tbody>
                 <tr>
@@ -121,18 +128,7 @@
                 </tr>
                 <tr>
                     <td colspan="6">
-                        <p align="center" style="margin: 4px 0;">
-                            <!-- UP Seal SVG -->
-                            <svg width="95" height="95" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="50" cy="50" r="46" stroke="#000" stroke-width="2" fill="none"/>
-                                <circle cx="50" cy="50" r="38" stroke="#000" stroke-width="1" stroke-dasharray="3,2" fill="none"/>
-                                <text x="50" y="24" font-size="8" font-weight="bold" text-anchor="middle" fill="#000">उत्तर प्रदेश सरकार</text>
-                                <path d="M50 30 L56 48 L44 48 Z" fill="#000"/>
-                                <rect x="40" y="50" width="20" height="14" fill="#000"/>
-                                <circle cx="50" cy="72" r="5" stroke="#000" stroke-width="2" fill="none"/>
-                                <text x="50" y="86" font-size="7" font-weight="bold" text-anchor="middle" fill="#000">सत्यमेव जयते</text>
-                            </svg>
-                        </p>
+                         <p align="center"><img src="sealofup.jpg" width="110" height="110"></p>
                     </td>
                 </tr>
                 <tr>
@@ -179,52 +175,52 @@
                             <tbody>
                                  <tr>
                                     <td width="25%" align="left" valign="top">&nbsp;</td>
-                                    <td colspan="2"   align="left" valign="top">सम्बन्धित लेखपाल की जांच आख्या दिनांक jjDATE के आधार पर एतद् द्वारा</td>
+                                    <td colspan="2" align="left" valign="top">सम्बन्धित लेखपाल की जांच आख्या दिनांक jjDATE के आधार पर एतद् द्वारा</td>
                                     <td width="25%" rowspan="8" align="right" valign="top" id="certPhotoBox" class="photo-box" style="padding-right: 8px;"></td>
                                 </tr>
                                 <tr>
                                     <td width="25%" align="left" valign="top">&nbsp;</td>
-                                    <td width="32%" height="22" align="left" nowrap="" valign="top">प्रमाणित किया जाता है कि</td>
+                                    <td width="15%" height="22" align="left" nowrap="" valign="top">प्रमाणित किया जाता है कि&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
                                     <td width="33%" height="22" align="left" valign="middle" style="font-family: verdana;"><font size="2"><b><span id="tblNameEng" class="out_nameEng"></span> / <span id="tblNameHindi" class="out_nameHindi"></span></b></font></td>
                                 </tr>
                                 <tr>
                                     <td width="25%" align="left" valign="top">&nbsp;</td>
-                                    <td width="32%" height="22" align="left" nowrap="" valign="middle"><span id="tblGuardianLbl" class="out_relation"></span></td>
+                                    <td width="15%" height="22" align="left" nowrap="" valign="middle"><span id="tblGuardianLbl" class="out_relation"></span></td>
                                     <td width="33%" height="22" align="left" valign="middle" style="font-family: verdana;"><font size="2"><b><span id="tblGuardianVal" class="out_guardianName"></span></b></font></td>
                                 </tr>
                                 <tr>
                                     <td width="25%" align="left" valign="top">&nbsp;</td>
-                                    <td width="32%" height="22" align="left" nowrap="" valign="middle"><font size="2">माता का नाम</font></td>
+                                    <td width="15%" height="22" align="left" nowrap="" valign="middle"><font size="2">माता का नाम</font></td>
                                     <td width="33%" height="22" align="left" valign="middle" style="font-family: verdana;"><font size="2"><b><span id="tblMotherVal" class="out_motherName"></span></b></font></td>
                                 </tr>
                                 <tr>
                                     <td width="25%" align="left" valign="top">&nbsp;</td>
-                                    <td width="32%" height="22" align="left" nowrap="" valign="middle"><font size="2">मकान नम्बर</font></td>
+                                    <td width="15%" height="22" align="left" nowrap="" valign="middle"><font size="2">मकान नम्बर</font></td>
                                     <td width="33%" height="22" align="left" valign="middle" style="font-family: verdana;"><font size="2"><b><span id="tblAddressVal" class="out_mohalla"></span></b></font></td>
                                 </tr>
                                 <tr>
                                     <td width="25%" align="left" valign="top">&nbsp;</td>
-                                    <td width="32%" height="22" align="left" nowrap="" valign="middle"><font size="2">निवासी</font></td>
+                                    <td width="15%" height="22" align="left" nowrap="" valign="middle"><font size="2">मोहल्ला</font></td>
                                     <td width="33%" height="22" align="left" valign="middle" style="font-family: verdana;"><font size="2"><b><span id="tblAddressVal" class="out_mohalla"></span></b></font></td>
                                 </tr>
                                 <tr>
                                     <td width="25%" align="left" nowrap="" valign="top">&nbsp;</td>
-                                    <td width="32%" height="22" align="left" nowrap="" valign="top"><font size="2">ग्राम</font></td>
+                                    <td width="15%" height="22" align="left" nowrap="" valign="top"><font size="2">ग्राम</font></td>
                                     <td width="33%" height="22" align="left" valign="top" style="font-family: verdana;"><font size="2"><b><span class="out_village"></span></b>&nbsp;</font></td>
                                 </tr>
                                 <tr>
                                     <td width="25%" align="left" nowrap="" valign="top">&nbsp;</td>
-                                    <td width="32%" height="22" align="left" nowrap="" valign="top"><font size="2">थाना</font></td>
+                                    <td width="15%" height="22" align="left" nowrap="" valign="top"><font size="2">थाना</font></td>
                                     <td width="33%" height="22" align="left" valign="top" style="font-family: verdana;"><font size="2"><b><span class="out_village"></span></b>&nbsp;</font></td>
                                 </tr>
                                 <tr>
                                     <td width="25%" align="left" nowrap="" valign="top">&nbsp;</td>
-                                    <td width="32%" height="22" align="left" nowrap="" valign="top"><font size="2">तहसील</font></td>
+                                    <td width="15%" height="22" align="left" nowrap="" valign="top"><font size="2">तहसील</font></td>
                                     <td width="33%" height="22" align="left" valign="top" style="font-family: verdana;"><font size="2"><b><span id="tblTehDistVal" class="out_tehsil"></span></b></font></td>
                                 </tr>
                                 <tr>
                                     <td width="25%" align="left" nowrap="" valign="top">&nbsp;</td>
-                                    <td width="32%" height="22" align="left" nowrap="" valign="top"><font size="2">जिला</font></td>
+                                    <td width="15%" height="22" align="left" nowrap="" valign="top"><font size="2">जिला</font></td>
                                     <td width="33%" height="22" align="left" valign="top" style="font-family: verdana;"><font size="2"><b><span class="out_district"></span></b></font></td>
                                 </tr>
                             </tbody>
