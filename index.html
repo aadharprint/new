@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>कास्ट सर्टिफिकेट - ऑनलाइन डेटा एंट्री एवं रिकॉर्ड सिस्टम</title>
+    <title>OVI PRINTS</title>
     <!-- Firebase SDK (Compat v10.12.2 via jsDelivr CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"></script>
@@ -586,30 +586,12 @@
 <div class="container">
     <!-- मुख्य वेबसाइट हेडर -->
     <div class="site-header">
-        <div class="badge-top">Online Certificate Portal</div>
+        <div class="badge-top">OVI PRINTS</div>
         <h1>कास्ट सर्टिफिकेट (Caste Certificate)</h1>
-        <p>ऑनलाइन जाति प्रमाण पत्र डेटा एंट्री एवं डिजिटल रिकॉर्ड सिस्टम</p>
+        <p>जाति प्रमाण पत्र</p>
     </div>
 
     <div class="content-body">
-        <div class="section-heading">
-            <h2>नया रिकॉर्ड दर्ज करें (Data Entry Form)</h2>
-        </div>
-
-        <!-- ऑटो-जनरेटेड 2 सर्टिफिकेट आईडी (Prefix 2345 + 5 Digits: 50000-99000) -->
-        <div class="id-banner">
-            <div class="id-items">
-                <div class="id-pill">
-                    <span class="lbl">आवेदन क्र० (ID 1):</span>
-                    <strong id="displayId1">2345-----</strong>
-                </div>
-                <div class="id-pill">
-                    <span class="lbl">प्रमाण पत्र क्र० (ID 2):</span>
-                    <strong id="displayId2">2345-----</strong>
-                </div>
-            </div>
-            <button type="button" class="btn-regen" onclick="generateCertificateIds()">नई ID जनरेट करें</button>
-        </div>
         
         <form id="recordForm">
             <div class="form-grid">
@@ -814,11 +796,11 @@
     // प्रीफिक्स 2345 के साथ 50000 से 99000 के बीच रैंडम 5-डिजिट नंबर जनरेट करने का फंक्शन
     function createRandom1Id() {
         const randomFiveDigits = Math.floor(50000 + Math.random() * 49001); // 50000 से 99000
-        return "2345" + String(randomFiveDigits);
+        return "2613900200" + String(randomFiveDigits);
     }
       function createRandom2Id() {
-        const randomFiveDigits = Math.floor(50000 + Math.random() * 49001); // 50000 से 99000
-        return "2345" + String(randomFiveDigits);
+        const randomFiveDigit = randomFiveDigits - 2830; 
+        return "0812620" + String(randomFiveDigit);
     }
 
     function generateCertificateIds() {
