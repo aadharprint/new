@@ -3,210 +3,776 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>डेटा एंट्री फॉर्म - रिकॉर्ड सिस्टम (Ovi Prints)</title>
+    <title>कास्ट सर्टिफिकेट - ऑनलाइन डेटा एंट्री एवं रिकॉर्ड सिस्टम</title>
     <!-- Firebase SDK (Compat v10.12.2 via jsDelivr CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: auto; background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .header-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
-        h2 { text-align: center; color: #1a73e8; margin: 0; }
-        .section-title { text-align: center; color: #1a73e8; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .status-badge { font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 20px; background-color: #e8f0fe; color: #1a73e8; display: inline-flex; align-items: center; gap: 6px; }
-        .status-badge.connected { background-color: #e6f4ea; color: #137333; }
-        .status-badge.offline { background-color: #fef7e0; color: #b06000; }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background-color: currentColor; display: inline-block; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .form-group { display: flex; flex-direction: column; }
-        label { font-weight: bold; margin-bottom: 5px; color: #333; font-size: 14px; }
-        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; outline: none; }
-        input:focus, select:focus { border-color: #1a73e8; box-shadow: 0 0 5px rgba(26,115,232,0.3); }
-        .btn-submit { grid-column: span 2; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: background-color 0.2s; }
-        .btn-submit:hover { background-color: #218838; }
-        .btn-submit:disabled { background-color: #6c757d; cursor: not-allowed; }
-        
-        /* हिस्ट्री टेबल का स्टाइल */
-        .history-section { margin-top: 40px; }
-        .table-wrapper { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #1a73e8; color: white; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        .action-btn { background-color: #007bff; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; display: inline-block; }
-        .action-btn:hover { background-color: #0069d9; }
-        .delete-btn { background-color: #dc3545; color: white; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; margin-left: 5px; }
-        .delete-btn:hover { background-color: #c82333; }
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --primary-soft: #eff6ff;
+            --accent: #059669;
+            --accent-hover: #047857;
+            --danger: #dc2626;
+            --danger-hover: #b91c1c;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --card-bg: #ffffff;
+            --page-bg: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #e2e8f0 0%, #f8fafc 100%);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 24px 16px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1020px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* वेबसाइट हेडर */
+        .site-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: #ffffff;
+            padding: 28px 24px;
+            text-align: center;
+            position: relative;
+        }
+
+        .site-header .badge-top {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            color: #e0f2fe;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .site-header h1 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+
+        .site-header p {
+            margin: 6px 0 0;
+            font-size: 14px;
+            color: #dbeafe;
+        }
+
+        .content-body {
+            padding: 28px 26px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 12px;
+            margin-bottom: 22px;
+        }
+
+        .section-heading h2 {
+            color: var(--primary);
+            font-size: 20px;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        /* ऑटो-जनरेटेड आईडी बार */
+        .id-banner {
+            background: var(--primary-soft);
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .id-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .id-pill {
+            background: #ffffff;
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .id-pill span.lbl {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .id-pill strong {
+            color: var(--primary);
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-regen {
+            background: #ffffff;
+            color: var(--primary);
+            border: 1px solid var(--primary-light);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-regen:hover {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        /* फॉर्म ग्रिड */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full-span {
+            grid-column: span 2;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select {
+            padding: 11px 13px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 15px;
+            color: var(--text-dark);
+            background-color: #f8fafc;
+            outline: none;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--primary-light);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+        }
+
+        /* फोटो अपलोड कार्ड */
+        .photo-upload-card {
+            grid-column: span 2;
+            border: 2px dashed #93c5fd;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .photo-info {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .photo-info label {
+            display: block;
+            font-size: 15px;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .photo-info p {
+            margin: 0 0 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .photo-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .file-input-label {
+            background: var(--primary-light);
+            color: #ffffff;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-block;
+            transition: background 0.2s;
+            margin: 0;
+        }
+
+        .file-input-label:hover {
+            background: var(--primary);
+        }
+
+        #photoInput {
+            display: none;
+        }
+
+        .btn-clear-photo {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: none;
+        }
+
+        .photo-preview-box {
+            width: 96px;
+            height: 112px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+            padding: 4px;
+        }
+
+        .photo-preview-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        /* सबमिट बटन */
+        .btn-submit {
+            grid-column: span 2;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #047857 0%, #059669 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(5, 150, 105, 0.38);
+        }
+
+        .btn-submit:disabled {
+            background: #94a3b8;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* हिस्ट्री सेक्शन */
+        .history-section {
+            margin-top: 42px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 720px;
+        }
+
+        th, td {
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px 14px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #1e3a8a;
+            color: #ffffff;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .thumb-img {
+            width: 42px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            background: #f1f5f9;
+            display: block;
+        }
+
+        .no-thumb {
+            width: 42px;
+            height: 50px;
+            border-radius: 6px;
+            border: 1px dashed #cbd5e1;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #94a3b8;
+            text-align: center;
+        }
+
+        .id-badge {
+            display: inline-block;
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 1px 0;
+        }
+
+        .action-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background-color: #2563eb;
+            color: white;
+            padding: 7px 12px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-block;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        .delete-btn {
+            background-color: var(--danger);
+            color: white;
+            padding: 7px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .delete-btn:hover {
+            background-color: var(--danger-hover);
+        }
 
         /* कस्टम कन्फर्मेशन मोडल और टोस्ट */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; align-items: center; justify-content: center; padding: 15px; }
-        .modal-overlay.active { display: flex; }
-        .modal-box { background: #fff; max-width: 380px; width: 100%; padding: 22px; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); text-align: center; }
-        .modal-box h3 { margin: 0 0 10px; color: #222; font-size: 18px; }
-        .modal-box p { margin: 0 0 20px; color: #555; font-size: 14px; }
-        .modal-actions { display: flex; justify-content: center; gap: 10px; }
-        .btn-cancel { padding: 8px 16px; border: 1px solid #ccc; background: #f8f9fa; color: #333; border-radius: 5px; cursor: pointer; font-weight: 600; }
-        .btn-confirm-delete { padding: 8px 16px; border: none; background: #dc3545; color: #fff; border-radius: 5px; cursor: pointer; font-weight: 600; }
-        .toast-msg { position: fixed; bottom: 20px; right: 20px; background: #323232; color: #fff; padding: 12px 18px; border-radius: 6px; font-size: 14px; display: none; z-index: 1001; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
 
-        @media (max-width: 640px) {
-            .form-grid { grid-template-columns: 1fr; }
-            .btn-submit, .full-span { grid-column: span 1 !important; }
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #fff;
+            max-width: 390px;
+            width: 100%;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+            text-align: center;
+        }
+
+        .modal-box h3 {
+            margin: 0 0 10px;
+            color: var(--text-dark);
+            font-size: 19px;
+        }
+
+        .modal-box p {
+            margin: 0 0 22px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-cancel {
+            padding: 9px 18px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #334155;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-confirm-delete {
+            padding: 9px 18px;
+            border: none;
+            background: var(--danger);
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0f172a;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+            z-index: 1001;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* मोबाइल और टैबलेट रिस्पॉन्सिव स्टाइल */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px 8px;
+            }
+
+            .site-header {
+                padding: 20px 16px;
+            }
+
+            .site-header h1 {
+                font-size: 24px;
+            }
+
+            .content-body {
+                padding: 18px 14px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .full-span,
+            .photo-upload-card,
+            .btn-submit {
+                grid-column: span 1 !important;
+            }
+
+            .id-banner {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .id-items {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .id-pill {
+                justify-content: space-between;
+            }
+
+            .photo-upload-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header-bar">
-        <h2>नया रिकॉर्ड दर्ज करें (Data Entry Form)</h2>
-        <div id="firebaseStatus" class="status-badge">
-            <span class="status-dot"></span>
-            <span id="firebaseStatusText">Firebase से जुड़ रहा है...</span>
-        </div>
+    <!-- मुख्य वेबसाइट हेडर -->
+    <div class="site-header">
+        <div class="badge-top">Online Certificate Portal</div>
+        <h1>कास्ट सर्टिफिकेट (Caste Certificate)</h1>
+        <p>ऑनलाइन जाति प्रमाण पत्र डेटा एंट्री एवं डिजिटल रिकॉर्ड सिस्टम</p>
     </div>
-    
-    <form id="recordForm">
-        <div class="form-grid">
-            
-            <!-- 1. जिला (District) -->
-            <div class="form-group">
-                <label>1. जिला (District) चुनें:</label>
-                <select id="district" required onchange="loadTehsils()">
-                    <option value="">-- जिला चुनें --</option>
-                </select>
-            </div>
 
-            <!-- 2. तहसील (Tehsil) -->
-            <div class="form-group">
-                <label>2. तहसील (Tehsil) चुनें:</label>
-                <select id="tehsil" required onchange="autoFillSDM()">
-                    <option value="">-- पहले जिला चुनें --</option>
-                </select>
-            </div>
-
-            <!-- 3. कस्टमर का नाम (English) -->
-            <div class="form-group">
-                <label>3. नाम (English - First Letter Capital):</label>
-                <input type="text" id="nameEng" required placeholder="Ex: Rahul Kumar" oninput="makeTitleCase(this)">
-            </div>
-
-            <!-- 4. कस्टमर का नाम (Hindi) -->
-            <div class="form-group">
-                <label>4. नाम (हिंदी में):</label>
-                <input type="text" id="nameHindi" required placeholder="उदा. राहुल कुमार">
-            </div>
-
-            <!-- 5. संबंध (Relationship) -->
-            <div class="form-group">
-                <label>5. संबंध (पुत्र / पुत्री / पत्नी):</label>
-                <select id="relation" required onchange="updateRelationLabel()">
-                    <option value="पुत्र/पुत्री">पुत्र/पुत्री</option>
-                    <option value="पत्नी">पत्नी</option>
-                </select>
-            </div>
-
-            <!-- 6. पिता या पति का नाम -->
-            <div class="form-group">
-                <label id="guardianLabel">6. पिता का नाम (Father's Name):</label>
-                <input type="text" id="guardianName" required placeholder="पिता/पति का नाम हिंदी में">
-            </div>
-
-            <!-- 7. माता का नाम -->
-            <div class="form-group">
-                <label>7. माता का नाम (Mother's Name):</label>
-                <input type="text" id="motherName" required placeholder="माता का नाम हिंदी में">
-            </div>
-
-            <!-- 8. मोहल्ला / मकान नंबर -->
-            <div class="form-group">
-                <label>8. मोहल्ला / मकान नंबर:</label>
-                <input type="text" id="mohalla" required placeholder="मोहल्ला या मकान नं.">
-            </div>
-
-            <!-- 9. गाँव / ग्राम -->
-            <div class="form-group">
-                <label>9. ग्राम / गाँव का नाम:</label>
-                <input type="text" id="village" required placeholder="गाँव का नाम दर्ज करें">
-            </div>
-
-            <!-- 10. जाति (Caste Dropdown) -->
-            <div class="form-group">
-                <label>10. जाति (Caste) चुनें:</label>
-                <select id="caste" required>
-                    <option value="">-- जाति चुनें --</option>
-                    <option value="गुर्जर">गुर्जर</option>
-                    <option value="प्रजापति">प्रजापति</option>
-                    <option value="कश्यप">कश्यप</option>
-                    <option value="जाट">जाट</option>
-                    <option value="यादव">यादव</option>
-                    <option value="सैनी">सैनी</option>
-                    <option value="पाल">पाल</option>
-                    <option value="विश्वकर्मा">विश्वकर्मा</option>
-                    <option value="कुम्हार">कुम्हार</option>
-                    <option value="नाई">नाई</option>
-                    <option value="धोबी">धोबी</option>
-                    <option value="तेली">तेली</option>
-                    <option value="लोहार">लोहार</option>
-                    <option value="अंसारी">अंसारी</option>
-                    <option value="सैफी">सैफी</option>
-                </select>
-            </div>
-
-            <!-- 11. VLE का नाम -->
-            <div class="form-group">
-                <label>11. VLE (संचालक) का नाम:</label>
-                <select id="vle" required>
-                    <option value="">-- VLE चुनें --</option>
-                    <option value="राहुल">राहुल</option>
-                    <option value="रोहित">रोहित</option>
-                    <option value="संदीप">संदीप</option>
-                    <option value="मुकेश">मुकेश</option>
-                    <option value="समीर">समीर</option>
-                    <option value="शमीम">शमीम</option>
-                    <option value="शौकीन">शौकीन</option>
-                    <option value="अमित">अमित</option>
-                    <option value="विकास">विकास</option>
-                    <option value="दीपक">दीपक</option>
-                </select>
-            </div>
-
-            <!-- 12. तारीख (Date) -->
-            <div class="form-group">
-                <label>12. तारीख (Date):</label>
-                <input type="date" id="certDate" required>
-            </div>
-
-            <!-- 13. SDM का नाम (Auto-filled in CAPITAL LETTERS) -->
-            <div class="form-group full-span" style="grid-column: span 2;">
-                <label>13. SDM का नाम (CAPITAL LETTERS में अपने आप आएगा, आप बदल भी सकते हैं):</label>
-                <input type="text" id="sdmName" required placeholder="EX: SUBHASH SINGH" style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
-            </div>
-
-            <button type="submit" id="submitBtn" class="btn-submit">सेव करें और पेज जनरेट करें (Save & Generate)</button>
+    <div class="content-body">
+        <div class="section-heading">
+            <h2>नया रिकॉर्ड दर्ज करें (Data Entry Form)</h2>
         </div>
-    </form>
 
-    <!-- हिस्ट्री सेक्शन -->
-    <div class="history-section">
-        <h2 class="section-title">पुराने सेव किए गए रिकॉर्ड्स (Saved History)</h2>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>तारीख</th>
-                        <th>नाम (हिंदी / Eng)</th>
-                        <th>पिता/पति</th>
-                        <th>जिला / तहसील</th>
-                        <th>जाति</th>
-                        <th>SDM Name</th>
-                        <th>एक्शन (PDF / Print)</th>
-                    </tr>
-                </thead>
-                <tbody id="historyTableBody">
-                    <!-- हिस्ट्री अपने आप यहाँ लोड होगी -->
-                </tbody>
-            </table>
+        <!-- ऑटो-जनरेटेड 2 सर्टिफिकेट आईडी (Prefix 2345 + 5 Digits: 50000-99000) -->
+        <div class="id-banner">
+            <div class="id-items">
+                <div class="id-pill">
+                    <span class="lbl">आवेदन क्र० (ID 1):</span>
+                    <strong id="displayId1">2345-----</strong>
+                </div>
+                <div class="id-pill">
+                    <span class="lbl">प्रमाण पत्र क्र० (ID 2):</span>
+                    <strong id="displayId2">2345-----</strong>
+                </div>
+            </div>
+            <button type="button" class="btn-regen" onclick="generateCertificateIds()">नई ID जनरेट करें</button>
+        </div>
+        
+        <form id="recordForm">
+            <div class="form-grid">
+                
+                <!-- 1. जिला (District) -->
+                <div class="form-group">
+                    <label>1. जिला (District) चुनें:</label>
+                    <select id="district" required onchange="loadTehsils()">
+                        <option value="">-- जिला चुनें --</option>
+                    </select>
+                </div>
+
+                <!-- 2. तहसील (Tehsil) -->
+                <div class="form-group">
+                    <label>2. तहसील (Tehsil) चुनें:</label>
+                    <select id="tehsil" required onchange="autoFillSDM()">
+                        <option value="">-- पहले जिला चुनें --</option>
+                    </select>
+                </div>
+
+                <!-- 3. कस्टमर का नाम (English) -->
+                <div class="form-group">
+                    <label>3. नाम (English - First Letter Capital):</label>
+                    <input type="text" id="nameEng" required placeholder="Ex: Rahul Kumar" oninput="makeTitleCase(this)">
+                </div>
+
+                <!-- 4. कस्टमर का नाम (Hindi) -->
+                <div class="form-group">
+                    <label>4. नाम (हिंदी में):</label>
+                    <input type="text" id="nameHindi" required placeholder="उदा. राहुल कुमार">
+                </div>
+
+                <!-- 5. संबंध (Relationship) -->
+                <div class="form-group">
+                    <label>5. संबंध (पुत्र / पुत्री / पत्नी):</label>
+                    <select id="relation" required onchange="updateRelationLabel()">
+                        <option value="पुत्र/पुत्री">पुत्र/पुत्री</option>
+                        <option value="पत्नी">पत्नी</option>
+                    </select>
+                </div>
+
+                <!-- 6. पिता या पति का नाम -->
+                <div class="form-group">
+                    <label id="guardianLabel">6. पिता का नाम (Father's Name):</label>
+                    <input type="text" id="guardianName" required placeholder="पिता/पति का नाम हिंदी में">
+                </div>
+
+                <!-- 7. माता का नाम -->
+                <div class="form-group">
+                    <label>7. माता का नाम (Mother's Name):</label>
+                    <input type="text" id="motherName" required placeholder="माता का नाम हिंदी में">
+                </div>
+
+                <!-- 8. मोहल्ला / मकान नंबर -->
+                <div class="form-group">
+                    <label>8. मोहल्ला / मकान नंबर:</label>
+                    <input type="text" id="mohalla" required placeholder="मोहल्ला या मकान नं.">
+                </div>
+
+                <!-- 9. गाँव / ग्राम -->
+                <div class="form-group">
+                    <label>9. ग्राम / गाँव का नाम:</label>
+                    <input type="text" id="village" required placeholder="गाँव का नाम दर्ज करें">
+                </div>
+
+                <!-- 10. जाति (Caste Dropdown) -->
+                <div class="form-group">
+                    <label>10. जाति (Caste) चुनें:</label>
+                    <select id="caste" required>
+                        <option value="">-- जाति चुनें --</option>
+                        <option value="गुर्जर">गुर्जर</option>
+                        <option value="प्रजापति">प्रजापति</option>
+                        <option value="कश्यप">कश्यप</option>
+                        <option value="जाट">जाट</option>
+                        <option value="यादव">यादव</option>
+                        <option value="सैनी">सैनी</option>
+                        <option value="पाल">पाल</option>
+                        <option value="विश्वकर्मा">विश्वकर्मा</option>
+                        <option value="कुम्हार">कुम्हार</option>
+                        <option value="नाई">नाई</option>
+                        <option value="धोबी">धोबी</option>
+                        <option value="तेली">तेली</option>
+                        <option value="लोहार">लोहार</option>
+                        <option value="अंसारी">अंसारी</option>
+                        <option value="सैफी">सैफी</option>
+                    </select>
+                </div>
+
+                <!-- 11. VLE का नाम -->
+                <div class="form-group">
+                    <label>11. VLE (संचालक) का नाम:</label>
+                    <select id="vle" required>
+                        <option value="">-- VLE चुनें --</option>
+                        <option value="राहुल">राहुल</option>
+                        <option value="रोहित">रोहित</option>
+                        <option value="संदीप">संदीप</option>
+                        <option value="मुकेश">मुकेश</option>
+                        <option value="समीर">समीर</option>
+                        <option value="शमीम">शमीम</option>
+                        <option value="शौकीन">शौकीन</option>
+                        <option value="अमित">अमित</option>
+                        <option value="विकास">विकास</option>
+                        <option value="दीपक">दीपक</option>
+                    </select>
+                </div>
+
+                <!-- 12. तारीख (Date) -->
+                <div class="form-group">
+                    <label>12. तारीख (Date):</label>
+                    <input type="date" id="certDate" required>
+                </div>
+
+                <!-- 13. SDM का नाम (Auto-filled in CAPITAL LETTERS) -->
+                <div class="form-group full-span">
+                    <label>13. SDM का नाम (CAPITAL LETTERS में अपने आप आएगा, आप बदल भी सकते हैं):</label>
+                    <input type="text" id="sdmName" required placeholder="EX: SUBHASH SINGH" style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
+                </div>
+
+                <!-- 14. आवेदक का फोटो अपलोड (Photo Upload) -->
+                <div class="photo-upload-card">
+                    <div class="photo-info">
+                        <label>14. आवेदक का पासपोर्ट साइज फोटो अपलोड करें (Applicant Photo):</label>
+                        <p>JPG या PNG फोटो चुनें। यह फोटो और दोनों सर्टिफिकेट ID सीधे Firebase और आपके सर्टिफिकेट में सेव हो जाएंगी।</p>
+                        <div class="photo-controls">
+                            <label for="photoInput" class="file-input-label">फोटो चुनें (Choose Photo)</label>
+                            <input type="file" id="photoInput" accept="image/*" onchange="handlePhotoUpload(this)">
+                            <button type="button" id="clearPhotoBtn" class="btn-clear-photo" onclick="clearUploadedPhoto()">फोटो हटाएं</button>
+                        </div>
+                    </div>
+                    <div class="photo-preview-box" id="photoPreviewBox">
+                        <span>फोटो प्रीव्यू</span>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-submit">सेव करें और पेज जनरेट करें (Save & Generate)</button>
+            </div>
+        </form>
+
+        <!-- हिस्ट्री सेक्शन -->
+        <div class="history-section">
+            <div class="section-heading">
+                <h2>पुराने सेव किए गए रिकॉर्ड्स (Saved History)</h2>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>फोटो</th>
+                            <th>तारीख</th>
+                            <th>दोनों सर्टिफिकेट ID</th>
+                            <th>नाम (हिंदी / Eng)</th>
+                            <th>पिता/पति</th>
+                            <th>जिला / तहसील</th>
+                            <th>जाति</th>
+                            <th>SDM Name</th>
+                            <th>एक्शन (PDF / Print)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <!-- हिस्ट्री अपने आप यहाँ लोड होगी -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -240,7 +806,79 @@
     let db = null;
     let pendingDeleteId = null;
     let recordsCache = [];
+    let currentPhotoBase64 = "";
+    let currentId1 = "";
+    let currentId2 = "";
     const COLLECTION_NAME = "casteRecords";
+
+    // प्रीफिक्स 2345 के साथ 50000 से 99000 के बीच रैंडम 5-डिजिट नंबर जनरेट करने का फंक्शन
+    function createRandom2345Id() {
+        const randomFiveDigits = Math.floor(50000 + Math.random() * 49001); // 50000 से 99000
+        return "2345" + String(randomFiveDigits);
+    }
+
+    function generateCertificateIds() {
+        currentId1 = createRandom2345Id();
+        currentId2 = createRandom2345Id();
+        while (currentId2 === currentId1) {
+            currentId2 = createRandom2345Id();
+        }
+        const el1 = document.getElementById("displayId1");
+        const el2 = document.getElementById("displayId2");
+        if (el1) el1.innerText = currentId1;
+        if (el2) el2.innerText = currentId2;
+    }
+
+    // फोटो को कंप्रेस और Base64 में बदलने का फंक्शन (ताकि Firebase Firestore में आसानी से सेव हो सके)
+    function handlePhotoUpload(input) {
+        const file = input.files && input.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement("canvas");
+                const maxW = 300;
+                const maxH = 360;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > maxW || height > maxH) {
+                    const ratio = Math.min(maxW / width, maxH / height);
+                    width = Math.round(width * ratio);
+                    height = Math.round(height * ratio);
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext("2d");
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, width, height);
+                ctx.drawImage(img, 0, 0, width, height);
+
+                currentPhotoBase64 = canvas.toDataURL("image/jpeg", 0.82);
+                const previewBox = document.getElementById("photoPreviewBox");
+                if (previewBox) {
+                    previewBox.innerHTML = `<img src="${currentPhotoBase64}" alt="Applicant Photo">`;
+                }
+                const clearBtn = document.getElementById("clearPhotoBtn");
+                if (clearBtn) clearBtn.style.display = "inline-block";
+            };
+            img.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function clearUploadedPhoto() {
+        currentPhotoBase64 = "";
+        const fileInput = document.getElementById("photoInput");
+        if (fileInput) fileInput.value = "";
+        const previewBox = document.getElementById("photoPreviewBox");
+        if (previewBox) previewBox.innerHTML = "<span>फोटो प्रीव्यू</span>";
+        const clearBtn = document.getElementById("clearPhotoBtn");
+        if (clearBtn) clearBtn.style.display = "none";
+    }
 
     // LocalStorage Helpers (Fallback & Cache)
     function getLocalRecords() {
@@ -257,14 +895,6 @@
         } catch (e) {
             // Ignore storage restriction errors in sandboxed iframes
         }
-    }
-
-    function updateStatusBadge(state, text) {
-        const badge = document.getElementById("firebaseStatus");
-        const label = document.getElementById("firebaseStatusText");
-        if (!badge || !label) return;
-        badge.className = "status-badge " + state;
-        label.innerText = text;
     }
 
     function showToast(msg) {
@@ -286,7 +916,6 @@
                 }
                 db = firebase.firestore();
 
-                // Real-time listener on Firestore collection "casteRecords"
                 db.collection(COLLECTION_NAME)
                     .orderBy("createdAt", "desc")
                     .onSnapshot(
@@ -297,24 +926,20 @@
                             });
                             recordsCache = fetched;
                             setLocalRecords(fetched.slice().reverse());
-                            updateStatusBadge("connected", "Firebase: कनेक्टेड (ovi-prints)");
                             renderHistoryFromList(recordsCache);
                         },
                         (error) => {
                             console.warn("Firestore sync warning:", error);
-                            updateStatusBadge("offline", "लोकल मोड (Firestore नियम जांचें)");
                             recordsCache = getLocalRecords().slice().reverse();
                             renderHistoryFromList(recordsCache);
                         }
                     );
             } else {
-                updateStatusBadge("offline", "लोकल मोड (Offline)");
                 recordsCache = getLocalRecords().slice().reverse();
                 renderHistoryFromList(recordsCache);
             }
         } catch (err) {
             console.warn("Firebase init error:", err);
-            updateStatusBadge("offline", "लोकल मोड (Offline)");
             recordsCache = getLocalRecords().slice().reverse();
             renderHistoryFromList(recordsCache);
         }
@@ -424,6 +1049,7 @@
             distSelect.appendChild(opt);
         }
         document.getElementById("certDate").valueAsDate = new Date();
+        generateCertificateIds();
         renderHistory();
         initFirebase();
     };
@@ -483,6 +1109,31 @@
         return `${parts[2]}/${parts[1]}/${parts[0]}`;
     }
 
+    // URL पैरामीटर्स बनाने का फंक्शन (फोटो को छोड़कर बाकी सभी डेटा और दोनों IDs)
+    function buildQueryParams(rec) {
+        const queryObj = {
+            id: rec.id || "",
+            id1: rec.id1 || "",
+            id2: rec.id2 || "",
+            appNo: rec.id1 || "",
+            certNo: rec.id2 || "",
+            district: rec.district || "",
+            tehsil: rec.tehsil || "",
+            nameEng: rec.nameEng || "",
+            nameHindi: rec.nameHindi || "",
+            relation: rec.relation || "",
+            guardianName: rec.guardianName || "",
+            motherName: rec.motherName || "",
+            mohalla: rec.mohalla || "",
+            village: rec.village || "",
+            caste: rec.caste || "",
+            vle: rec.vle || "",
+            date: rec.date || "",
+            sdmName: rec.sdmName || ""
+        };
+        return new URLSearchParams(queryObj).toString();
+    }
+
     document.getElementById("recordForm").addEventListener("submit", async function(e) {
         e.preventDefault();
 
@@ -491,10 +1142,18 @@
         submitBtn.disabled = true;
         submitBtn.innerText = "सेव हो रहा है... (Saving to Firebase...)";
 
+        if (!currentId1 || !currentId2) {
+            generateCertificateIds();
+        }
+
         const timestamp = new Date().getTime();
         const record = {
             id: "REC-" + timestamp,
             createdAt: timestamp,
+            id1: currentId1,
+            id2: currentId2,
+            appNo: currentId1,
+            certNo: currentId2,
             district: document.getElementById("district").value,
             tehsil: document.getElementById("tehsil").value,
             nameEng: document.getElementById("nameEng").value.trim(),
@@ -507,23 +1166,26 @@
             caste: document.getElementById("caste").value,
             vle: document.getElementById("vle").value,
             date: formatToDDMMYYYY(document.getElementById("certDate").value),
-            // हमेशा CAPITAL LETTERS में सेव होगा
-            sdmName: document.getElementById("sdmName").value.trim().toUpperCase()
+            sdmName: document.getElementById("sdmName").value.trim().toUpperCase(),
+            photo: currentPhotoBase64 || ""
         };
 
-        // 1. LocalStorage में बैकअप सेव करें
+        // 1. LocalStorage में पूरा रिकॉर्ड (फोटो और दोनों ID सहित) सेव करें
         let history = getLocalRecords();
         history.push(record);
         setLocalRecords(history);
+        try {
+            localStorage.setItem("latestCasteRecord", JSON.stringify(record));
+        } catch (err) {}
 
-        // 2. Firebase Firestore में सेव करें
+        // 2. Firebase Firestore में पूरा रिकॉर्ड (फोटो और दोनों ID सहित) सेव करें
         if (db) {
             try {
                 await db.collection(COLLECTION_NAME).doc(record.id).set(record);
-                showToast("रिकॉर्ड Firebase में सेव हो गया!");
+                showToast("रिकॉर्ड और दोनों ID Firebase में सफलतापूर्वक सेव हो गए!");
             } catch (err) {
                 console.error("Firestore save error:", err);
-                showToast("लोकल स्टोरेज में सेव किया गया (Firebase त्रुटि)");
+                showToast("लोकल स्टोरेज में सेव किया गया");
             }
         }
 
@@ -531,8 +1193,9 @@
         submitBtn.disabled = false;
         submitBtn.innerText = originalBtnText;
 
-        const params = new URLSearchParams(record);
-        window.location.href = `caste.html?${params.toString()}`;
+        // सर्टिफिकेट पेज पर दोनों ID और डेटा के साथ भेजें
+        const queryString = buildQueryParams(record);
+        window.location.href = `caste.html?${queryString}`;
     });
 
     function renderHistory() {
@@ -545,23 +1208,36 @@
         tbody.innerHTML = "";
 
         if (!list || list.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">अभी तक कोई रिकॉर्ड सेव नहीं है।</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding: 20px; color: #64748b;">अभी तक कोई रिकॉर्ड सेव नहीं है।</td></tr>';
             return;
         }
 
         list.forEach((rec) => {
-            const params = new URLSearchParams(rec);
+            const queryString = buildQueryParams(rec);
             const tr = document.createElement("tr");
+            const photoHtml = rec.photo
+                ? `<img src="${rec.photo}" class="thumb-img" alt="Photo">`
+                : `<div class="no-thumb">No<br>Photo</div>`;
+            const id1Text = rec.id1 || rec.appNo || "N/A";
+            const id2Text = rec.id2 || rec.certNo || "N/A";
+
             tr.innerHTML = `
+                <td>${photoHtml}</td>
                 <td>${rec.date || ""}</td>
+                <td>
+                    <span class="id-badge">ID 1: ${id1Text}</span><br>
+                    <span class="id-badge">ID 2: ${id2Text}</span>
+                </td>
                 <td><b>${rec.nameHindi || ""}</b><br><small>${rec.nameEng || ""}</small></td>
                 <td>${rec.relation || ""} - ${rec.guardianName || ""}</td>
                 <td>${rec.district || ""} (${rec.tehsil || ""})</td>
                 <td>${rec.caste || ""}</td>
                 <td><b>${rec.sdmName || ""}</b></td>
                 <td>
-                    <a href="caste.html?${params.toString()}" class="action-btn">देखें / PDF बनाएं</a>
-                    <button type="button" class="delete-btn" onclick="deleteRecord('${rec.id}')">हटाएं</button>
+                    <div class="action-group">
+                        <a href="caste.html?${queryString}" class="action-btn">देखें / PDF बनाएं</a>
+                        <button type="button" class="delete-btn" onclick="deleteRecord('${rec.id}')">हटाएं</button>
+                    </div>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -599,7 +1275,7 @@
                 showToast("रिकॉर्ड सफलतापूर्वक हटा दिया गया।");
             } catch (err) {
                 console.error("Firestore delete error:", err);
-                showToast("लोकल से हटाया गया (Firebase त्रुटि)");
+                showToast("लोकल से हटाया गया");
             }
         } else {
             showToast("रिकॉर्ड हटा दिया गया।");
