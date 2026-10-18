@@ -2049,22 +2049,11 @@
             tr.innerHTML = `
                 <td>${photoHtml}</td>
                 <td>${typeBadge}</td>
-                <td>
-                    <span class="id-badge">आवेदन: ${id1Text}</span><br>
-                    <span class="id-badge">प्रमाण: ${id2Text}</span>
-                </td>
+               
                 <td><b>${rec.date || ""}</b></td>
                 <td>
                     <b style="font-size: 15px; color: #0f172a;">${rec.nameHindi || ""}</b><br>
                     <small style="color: #475569;">${rec.nameEng || ""}</small>
-                </td>
-                <td>
-                    <span style="font-size: 13px;"><b>${rec.relation || "पुत्र/पुत्री"}:</b> ${rec.guardianName || "-"}</span><br>
-                    <small style="color: #64748b;"><b>माता:</b> ${rec.motherName || "-"}</small>
-                </td>
-                <td>
-                    <b>${rec.district || ""}</b> (${rec.tehsil || ""})<br>
-                    <small style="color: #475569;">ग्राम: ${rec.village || "-"} | जाति: ${rec.caste || "-"}</small>
                 </td>
                 <td>
                     <button type="button" class="preview-btn" onclick="event.stopPropagation(); openPreviewModal('${rec.id}')">
