@@ -3,33 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>डेटा एंट्री फॉर्म - रिकॉर्ड सिस्टम</title>
+    <title>डेटा एंट्री फॉर्म - रिकॉर्ड सिस्टम (Ovi Prints)</title>
+    <!-- Firebase SDK (Compat v10.12.2 via jsDelivr CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
         .container { max-width: 900px; margin: auto; background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #1a73e8; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .header-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+        h2 { text-align: center; color: #1a73e8; margin: 0; }
+        .section-title { text-align: center; color: #1a73e8; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .status-badge { font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 20px; background-color: #e8f0fe; color: #1a73e8; display: inline-flex; align-items: center; gap: 6px; }
+        .status-badge.connected { background-color: #e6f4ea; color: #137333; }
+        .status-badge.offline { background-color: #fef7e0; color: #b06000; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background-color: currentColor; display: inline-block; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .form-group { display: flex; flex-direction: column; }
         label { font-weight: bold; margin-bottom: 5px; color: #333; font-size: 14px; }
         input, select { padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; outline: none; }
         input:focus, select:focus { border-color: #1a73e8; box-shadow: 0 0 5px rgba(26,115,232,0.3); }
-        .btn-submit { grid-column: span 2; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-submit { grid-column: span 2; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: background-color 0.2s; }
         .btn-submit:hover { background-color: #218838; }
+        .btn-submit:disabled { background-color: #6c757d; cursor: not-allowed; }
         
         /* हिस्ट्री टेबल का स्टाइल */
         .history-section { margin-top: 40px; }
+        .table-wrapper { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
         th { background-color: #1a73e8; color: white; }
         tr:nth-child(even) { background-color: #f9f9f9; }
         .action-btn { background-color: #007bff; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; display: inline-block; }
+        .action-btn:hover { background-color: #0069d9; }
         .delete-btn { background-color: #dc3545; color: white; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; margin-left: 5px; }
+        .delete-btn:hover { background-color: #c82333; }
+
+        /* कस्टम कन्फर्मेशन मोडल और टोस्ट */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; align-items: center; justify-content: center; padding: 15px; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: #fff; max-width: 380px; width: 100%; padding: 22px; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); text-align: center; }
+        .modal-box h3 { margin: 0 0 10px; color: #222; font-size: 18px; }
+        .modal-box p { margin: 0 0 20px; color: #555; font-size: 14px; }
+        .modal-actions { display: flex; justify-content: center; gap: 10px; }
+        .btn-cancel { padding: 8px 16px; border: 1px solid #ccc; background: #f8f9fa; color: #333; border-radius: 5px; cursor: pointer; font-weight: 600; }
+        .btn-confirm-delete { padding: 8px 16px; border: none; background: #dc3545; color: #fff; border-radius: 5px; cursor: pointer; font-weight: 600; }
+        .toast-msg { position: fixed; bottom: 20px; right: 20px; background: #323232; color: #fff; padding: 12px 18px; border-radius: 6px; font-size: 14px; display: none; z-index: 1001; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+        @media (max-width: 640px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .btn-submit, .full-span { grid-column: span 1 !important; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>नया रिकॉर्ड दर्ज करें (Data Entry Form)</h2>
+    <div class="header-bar">
+        <h2>नया रिकॉर्ड दर्ज करें (Data Entry Form)</h2>
+        <div id="firebaseStatus" class="status-badge">
+            <span class="status-dot"></span>
+            <span id="firebaseStatusText">Firebase से जुड़ रहा है...</span>
+        </div>
+    </div>
     
     <form id="recordForm">
         <div class="form-grid">
@@ -143,38 +178,148 @@
             </div>
 
             <!-- 13. SDM का नाम (Auto-filled in CAPITAL LETTERS) -->
-            <div class="form-group" style="grid-column: span 2;">
+            <div class="form-group full-span" style="grid-column: span 2;">
                 <label>13. SDM का नाम (CAPITAL LETTERS में अपने आप आएगा, आप बदल भी सकते हैं):</label>
                 <input type="text" id="sdmName" required placeholder="EX: SUBHASH SINGH" style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
             </div>
 
-            <button type="submit" class="btn-submit">सेव करें और पेज जनरेट करें (Save & Generate)</button>
+            <button type="submit" id="submitBtn" class="btn-submit">सेव करें और पेज जनरेट करें (Save & Generate)</button>
         </div>
     </form>
 
     <!-- हिस्ट्री सेक्शन -->
     <div class="history-section">
-        <h2>पुराने सेव किए गए रिकॉर्ड्स (Saved History)</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>तारीख</th>
-                    <th>नाम (हिंदी / Eng)</th>
-                    <th>पिता/पति</th>
-                    <th>जिला / तहसील</th>
-                    <th>जाति</th>
-                    <th>SDM Name</th>
-                    <th>एक्शन (PDF / Print)</th>
-                </tr>
-            </thead>
-            <tbody id="historyTableBody">
-                <!-- हिस्ट्री अपने आप यहाँ लोड होगी -->
-            </tbody>
-        </table>
+        <h2 class="section-title">पुराने सेव किए गए रिकॉर्ड्स (Saved History)</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>तारीख</th>
+                        <th>नाम (हिंदी / Eng)</th>
+                        <th>पिता/पति</th>
+                        <th>जिला / तहसील</th>
+                        <th>जाति</th>
+                        <th>SDM Name</th>
+                        <th>एक्शन (PDF / Print)</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                    <!-- हिस्ट्री अपने आप यहाँ लोड होगी -->
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
+<!-- डिलीट कन्फर्मेशन मोडल -->
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3>रिकॉर्ड हटाएं?</h3>
+        <p>क्या आप वाकई इस रिकॉर्ड को स्थायी रूप से हटाना चाहते हैं?</p>
+        <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="closeDeleteModal()">रद्द करें</button>
+            <button type="button" class="btn-confirm-delete" onclick="confirmDeleteRecord()">हाँ, हटाएं</button>
+        </div>
+    </div>
+</div>
+
+<div id="toastMsg" class="toast-msg"></div>
+
 <script>
+    // Firebase Configuration (ovi-prints)
+    const firebaseConfig = {
+        apiKey: "AIzaSyBxq9AQgc_VQrmEt67XbIUUVGLDHkn6ouo",
+        authDomain: "ovi-prints.firebaseapp.com",
+        projectId: "ovi-prints",
+        storageBucket: "ovi-prints.firebasestorage.app",
+        messagingSenderId: "819516416369",
+        appId: "1:819516416369:web:8662bcbc2a6e73cb2796d0",
+        measurementId: "G-8MYV9FLSCX"
+    };
+
+    let db = null;
+    let pendingDeleteId = null;
+    let recordsCache = [];
+    const COLLECTION_NAME = "casteRecords";
+
+    // LocalStorage Helpers (Fallback & Cache)
+    function getLocalRecords() {
+        try {
+            return JSON.parse(localStorage.getItem(COLLECTION_NAME) || "[]");
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function setLocalRecords(records) {
+        try {
+            localStorage.setItem(COLLECTION_NAME, JSON.stringify(records));
+        } catch (e) {
+            // Ignore storage restriction errors in sandboxed iframes
+        }
+    }
+
+    function updateStatusBadge(state, text) {
+        const badge = document.getElementById("firebaseStatus");
+        const label = document.getElementById("firebaseStatusText");
+        if (!badge || !label) return;
+        badge.className = "status-badge " + state;
+        label.innerText = text;
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById("toastMsg");
+        if (!toast) return;
+        toast.innerText = msg;
+        toast.style.display = "block";
+        setTimeout(() => {
+            toast.style.display = "none";
+        }, 3000);
+    }
+
+    // Initialize Firebase & Firestore
+    function initFirebase() {
+        try {
+            if (typeof firebase !== "undefined") {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                db = firebase.firestore();
+
+                // Real-time listener on Firestore collection "casteRecords"
+                db.collection(COLLECTION_NAME)
+                    .orderBy("createdAt", "desc")
+                    .onSnapshot(
+                        (snapshot) => {
+                            const fetched = [];
+                            snapshot.forEach((doc) => {
+                                fetched.push(doc.data());
+                            });
+                            recordsCache = fetched;
+                            setLocalRecords(fetched.slice().reverse());
+                            updateStatusBadge("connected", "Firebase: कनेक्टेड (ovi-prints)");
+                            renderHistoryFromList(recordsCache);
+                        },
+                        (error) => {
+                            console.warn("Firestore sync warning:", error);
+                            updateStatusBadge("offline", "लोकल मोड (Firestore नियम जांचें)");
+                            recordsCache = getLocalRecords().slice().reverse();
+                            renderHistoryFromList(recordsCache);
+                        }
+                    );
+            } else {
+                updateStatusBadge("offline", "लोकल मोड (Offline)");
+                recordsCache = getLocalRecords().slice().reverse();
+                renderHistoryFromList(recordsCache);
+            }
+        } catch (err) {
+            console.warn("Firebase init error:", err);
+            updateStatusBadge("offline", "लोकल मोड (Offline)");
+            recordsCache = getLocalRecords().slice().reverse();
+            renderHistoryFromList(recordsCache);
+        }
+    }
+
     // 1. यूपी के 15 जिले, उनकी तहसीलें और हर तहसील के हिसाब से SDM का नाम (CAPITAL LETTERS में)
     const districtData = {
         "बागपत": {
@@ -280,6 +425,7 @@
         }
         document.getElementById("certDate").valueAsDate = new Date();
         renderHistory();
+        initFirebase();
     };
 
     function loadTehsils() {
@@ -337,11 +483,18 @@
         return `${parts[2]}/${parts[1]}/${parts[0]}`;
     }
 
-    document.getElementById("recordForm").addEventListener("submit", function(e) {
+    document.getElementById("recordForm").addEventListener("submit", async function(e) {
         e.preventDefault();
 
+        const submitBtn = document.getElementById("submitBtn");
+        const originalBtnText = submitBtn.innerText;
+        submitBtn.disabled = true;
+        submitBtn.innerText = "सेव हो रहा है... (Saving to Firebase...)";
+
+        const timestamp = new Date().getTime();
         const record = {
-            id: "REC-" + new Date().getTime(),
+            id: "REC-" + timestamp,
+            createdAt: timestamp,
             district: document.getElementById("district").value,
             tehsil: document.getElementById("tehsil").value,
             nameEng: document.getElementById("nameEng").value.trim(),
@@ -358,37 +511,57 @@
             sdmName: document.getElementById("sdmName").value.trim().toUpperCase()
         };
 
-        let history = JSON.parse(localStorage.getItem("casteRecords") || "[]");
+        // 1. LocalStorage में बैकअप सेव करें
+        let history = getLocalRecords();
         history.push(record);
-        localStorage.setItem("casteRecords", JSON.stringify(history));
+        setLocalRecords(history);
+
+        // 2. Firebase Firestore में सेव करें
+        if (db) {
+            try {
+                await db.collection(COLLECTION_NAME).doc(record.id).set(record);
+                showToast("रिकॉर्ड Firebase में सेव हो गया!");
+            } catch (err) {
+                console.error("Firestore save error:", err);
+                showToast("लोकल स्टोरेज में सेव किया गया (Firebase त्रुटि)");
+            }
+        }
+
+        renderHistory();
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
 
         const params = new URLSearchParams(record);
         window.location.href = `caste.html?${params.toString()}`;
     });
 
     function renderHistory() {
+        const list = recordsCache.length > 0 ? recordsCache : getLocalRecords().slice().reverse();
+        renderHistoryFromList(list);
+    }
+
+    function renderHistoryFromList(list) {
         const tbody = document.getElementById("historyTableBody");
-        let history = JSON.parse(localStorage.getItem("casteRecords") || "[]");
         tbody.innerHTML = "";
 
-        if (history.length === 0) {
+        if (!list || list.length === 0) {
             tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">अभी तक कोई रिकॉर्ड सेव नहीं है।</td></tr>';
             return;
         }
 
-        history.slice().reverse().forEach((rec) => {
+        list.forEach((rec) => {
             const params = new URLSearchParams(rec);
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td>${rec.date}</td>
-                <td><b>${rec.nameHindi}</b><br><small>${rec.nameEng}</small></td>
-                <td>${rec.relation} - ${rec.guardianName}</td>
-                <td>${rec.district} (${rec.tehsil})</td>
-                <td>${rec.caste}</td>
-                <td><b>${rec.sdmName}</b></td>
+                <td>${rec.date || ""}</td>
+                <td><b>${rec.nameHindi || ""}</b><br><small>${rec.nameEng || ""}</small></td>
+                <td>${rec.relation || ""} - ${rec.guardianName || ""}</td>
+                <td>${rec.district || ""} (${rec.tehsil || ""})</td>
+                <td>${rec.caste || ""}</td>
+                <td><b>${rec.sdmName || ""}</b></td>
                 <td>
                     <a href="caste.html?${params.toString()}" class="action-btn">देखें / PDF बनाएं</a>
-                    <button class="delete-btn" onclick="deleteRecord('${rec.id}')">हटाएं</button>
+                    <button type="button" class="delete-btn" onclick="deleteRecord('${rec.id}')">हटाएं</button>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -396,11 +569,40 @@
     }
 
     function deleteRecord(id) {
-        if (confirm("क्या आप इस रिकॉर्ड को हटाना चाहते हैं?")) {
-            let history = JSON.parse(localStorage.getItem("casteRecords") || "[]");
-            history = history.filter(item => item.id !== id);
-            localStorage.setItem("casteRecords", JSON.stringify(history));
-            renderHistory();
+        pendingDeleteId = id;
+        const modal = document.getElementById("deleteModal");
+        if (modal) modal.classList.add("active");
+    }
+
+    function closeDeleteModal() {
+        pendingDeleteId = null;
+        const modal = document.getElementById("deleteModal");
+        if (modal) modal.classList.remove("active");
+    }
+
+    async function confirmDeleteRecord() {
+        if (!pendingDeleteId) return;
+        const idToDelete = pendingDeleteId;
+        closeDeleteModal();
+
+        // 1. LocalStorage से हटाएं
+        let history = getLocalRecords();
+        history = history.filter(item => item.id !== idToDelete);
+        setLocalRecords(history);
+        recordsCache = recordsCache.filter(item => item.id !== idToDelete);
+        renderHistoryFromList(recordsCache.length > 0 ? recordsCache : history.slice().reverse());
+
+        // 2. Firebase Firestore से हटाएं
+        if (db) {
+            try {
+                await db.collection(COLLECTION_NAME).doc(idToDelete).delete();
+                showToast("रिकॉर्ड सफलतापूर्वक हटा दिया गया।");
+            } catch (err) {
+                console.error("Firestore delete error:", err);
+                showToast("लोकल से हटाया गया (Firebase त्रुटि)");
+            }
+        } else {
+            showToast("रिकॉर्ड हटा दिया गया।");
         }
     }
 </script>
