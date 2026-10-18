@@ -2,40 +2,6 @@
 
 <html >
 <head></head>
-	<!-- प्रिंट और वापस फॉर्म पर जाने का बटन (यह प्रिंट या PDF में नहीं छपेगा) -->
-<style>
-    @media print {
-        .no-print-bar { display: none !important; }
-    }
-</style>
-<div class="no-print-bar" style="text-align: center; padding: 15px; background: #333; margin-bottom: 20px;">
-    <a href="fill_caste.html" style="padding: 10px 20px; background: #007bff; color: #fff; text-decoration: none; border-radius: 5px; margin-right: 10px; font-family: sans-serif;">⬅ नया फॉर्म भरें / हिस्ट्री देखें</a>
-    <button onclick="window.print()" style="padding: 10px 20px; background: #28a745; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;">🖨️ Print / Download PDF</button>
-</div>
-
-<!-- फॉर्म का डेटा पेज में भरने की जावास्क्रिप्ट -->
-<script>
-    const params = new URLSearchParams(window.location.search);
-
-    const fields = [
-        "district", "tehsil", "nameEng", "nameHindi", 
-        "relation", "guardianName", "motherName", "mohalla", 
-        "village", "caste", "vle", "date", "sdmName"
-    ];
-
-    fields.forEach(function(field) {
-        // अगर किसी एक नाम को पेज में 2-3 जगह दिखाना हो, तो class="out_district" भी इस्तेमाल कर सकते हैं
-        const elById = document.getElementById("out_" + field);
-        if (elById) {
-            elById.innerText = params.get(field) || "";
-        }
-        
-        const elsByClass = document.querySelectorAll(".out_" + field);
-        elsByClass.forEach(function(el) {
-            el.innerText = params.get(field) || "";
-        });
-    });
-</script>
 <body>
   <table class="mgn" border="0" align="center" width="90%" cellspacing="0" cellpadding="0" style="border: 1px solid #000000; padding-left: 4px; padding-right: 4px; padding-top: 1px; padding-bottom: 1px; font-size: 10pt; font-family: Arial Unicode MS">
     <tbody>
@@ -250,5 +216,32 @@ theForm.onsubmit = WebForm_SaveScrollPositionOnSubmit;
 </script>
 </form>
 
+<!-- फॉर्म (fill_caste.html) से आने वाले डेटा को पेज में भरने की स्क्रिप्ट -->
+    <script>
+        window.addEventListener("DOMContentLoaded", function() {
+            const params = new URLSearchParams(window.location.search);
 
+            const fields = [
+                "id", "district", "tehsil", "nameEng", "nameHindi", 
+                "relation", "guardianName", "motherName", "mohalla", 
+                "village", "caste", "vle", "date", "sdmName"
+            ];
+
+            fields.forEach(function(field) {
+                const value = params.get(field) || "________";
+
+                // ID से ढूँढकर भरना
+                const elById = document.getElementById("out_" + field);
+                if (elById) {
+                    elById.innerText = value;
+                }
+
+                // Class से ढूँढकर सभी जगह भरना
+                const elsByClass = document.querySelectorAll(".out_" + field);
+                elsByClass.forEach(function(el) {
+                    el.innerText = value;
+                });
+            });
+        });
+    </script>
 </body></html>
