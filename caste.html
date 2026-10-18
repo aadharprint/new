@@ -7,7 +7,9 @@
 
 
 <html >
-<head></head>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
 <body>
 
 	<!-- फॉर्म (fill_caste.html) से आने वाले डेटा को पेज में भरने की स्क्रिप्ट -->
@@ -39,23 +41,28 @@
         });
 	const params = new URLSearchParams(window.location.search);
 
-// डेटा को एक साफ-सुथरे फॉर्मेट में तैयार करें
-let textForQR = "आवेदन क्र०: " + (params.get('id') || 'N/A') + "\n" +
-                "नाम: " + (params.get('nameHindi') || '') + " (" + (params.get('nameEng') || '') + ")\n" +
-                "पिता/पति: " + (params.get('guardianName') || '') + "\n" +
-                "जिला: " + (params.get('district') || '') + "\n" +
-                "तहसील: " + (params.get('tehsil') || '') + "\n" +
+const params = new URLSearchParams(window.location.search);
+
+// वह टेक्स्ट जो QR कोड के अंदर स्टोर होगा
+let textForQR = "प्रमाण पत्र विवरण:\n" +
+                "आवेदन क्र०: " + (params.get('id') || '') + "\n" +
+                "नाम: " + (params.get('nameHindi') || '') + " / " + (params.get('nameEng') || '') + "\n" +
+                "जिला: " + (params.get('district') || '') + " | तहसील: " + (params.get('tehsil') || '') + "\n" +
                 "जाति: " + (params.get('caste') || '') + "\n" +
                 "SDM: " + (params.get('sdmName') || '');
 
-// 'encodeURIComponent' लगाना सबसे जरूरी है, यही हिंदी टेक्स्ट को टूटने से बचाता है
-const encodedData = encodeURIComponent(textForQR);
+// पुराना QR अगर हो तो साफ करें और नया बनाएं
+document.getElementById("qrcode").innerHTML = "";
 
-// अब API यूआरएल बिल्कुल सही तरीके से काम करेगा
-const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodedData}`;
-
-// इमेज सोर्स में यूआरएल सेट करें
-document.getElementById("dynamicQR").src = qrUrl;
+// इस लाइब्रेरी से सीधे QR कोड जनरेट करें (बिना किसी API के)
+new QRCode(document.getElementById("qrcode"), {
+    text: textForQR,
+    width: 105,
+    height: 105,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+});
   </script>
 	<table class="mgn" border="0" align="center" width="90%" cellspacing="0" cellpadding="0" style="border: 1px solid #000000; padding-left: 4px; padding-right: 4px; padding-top: 1px; padding-bottom: 1px; font-size: 10pt; font-family: Arial Unicode MS">
     <tbody>
@@ -176,7 +183,7 @@ document.getElementById("dynamicQR").src = qrUrl;
 <tr><td>&nbsp;</td></tr>
 <tr>
     <td colspan="6" style="text-align: left; padding: 10px;">
-        <img id="dynamicQR" style="width: 105px; height: 105px;" alt="QR Code">
+        <div id="qrcode" style="display: inline-block;"></div>
     </td>
 </tr>
        
