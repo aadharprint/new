@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OVI PRINTS - जाति एवं निवास प्रमाण पत्र पोर्टल</title>
+    <title>OVI PRINTS</title>
     <!-- Google Fonts: Inter & Noto Sans Devanagari -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1153,20 +1153,19 @@
     <!-- मुख्य वेबसाइट हेडर -->
     <div id="siteHeader" class="site-header">
         <div class="brand-pill">OVI PRINTS DIGITAL PORTAL</div>
-        <h1 id="headerTitle">जाति प्रमाण पत्र (Caste Certificate)</h1>
-        <p id="headerSubtitle">ऑनलाइन प्रमाण पत्र जनरेशन एवं कंबाइंड रिकॉर्ड पोर्टल (caste.html एवं domicile.html एंबेडेड सपोर्ट)</p>
+        <h1 id="headerTitle">जCaste Certificate</h1>
     </div>
 
     <!-- 3 मुख्य टैब: 1. जाति प्रमाण पत्र | 2. निवास प्रमाण पत्र | 3. कंबाइंड हिस्ट्री -->
     <div class="nav-tabs-bar">
         <button type="button" id="tabBtnCaste" class="nav-tab-btn active-caste" onclick="switchTab('caste')">
-            <span>📄 जाति प्रमाण पत्र (Caste)</span>
+            <span>📄 Caste</span>
         </button>
         <button type="button" id="tabBtnDomicile" class="nav-tab-btn" onclick="switchTab('domicile')">
-            <span>🏠 निवास प्रमाण पत्र (Domicile)</span>
+            <span>🏠 Domicile</span>
         </button>
         <button type="button" id="tabBtnHistory" class="nav-tab-btn" onclick="switchTab('history')">
-            <span>🗂️ कंबाइंड हिस्ट्री (All Records)</span>
+            <span>🗂️ All Records</span>
             <span id="totalRecordsBadge" class="tab-count-badge">0</span>
         </button>
     </div>
@@ -1178,25 +1177,6 @@
              ========================================== -->
         <div id="formPane" class="tab-pane active">
 
-            <div id="modeBanner" class="mode-indicator-bar mode-caste">
-                <span id="modeBannerText">वर्तमान चयन: जाति प्रमाण पत्र (Caste Certificate Form)</span>
-                <span style="font-size: 13px; font-weight: 500;">सबमिट करने पर स्वतः हिस्ट्री खुलेगी और पॉपअप में अलग फाइल एम्बेड होगी</span>
-            </div>
-
-            <!-- ऑटो-जनरेटेड 2 सर्टिफिकेट आईडी -->
-            <div class="id-banner">
-                <div class="id-items">
-                    <div class="id-pill">
-                        <span class="lbl">आवेदन क्र० (ID 1):</span>
-                        <strong id="displayId1">2613900200-----</strong>
-                    </div>
-                    <div class="id-pill">
-                        <span class="lbl">प्रमाण पत्र क्र० (ID 2):</span>
-                        <strong id="displayId2">0812620-----</strong>
-                    </div>
-                </div>
-                <button type="button" class="btn-regen" onclick="generateCertificateIds()">नई ID जनरेट करें</button>
-            </div>
 
             <form id="recordForm">
                 <div class="form-grid">
@@ -1233,8 +1213,6 @@
                     <div class="form-group">
                         <label for="relation">5. संबंध (पुत्र / पुत्री / पत्नी):</label>
                         <select id="relation" required onchange="updateRelationLabel()">
-                            <option value="पुत्र">पुत्र (Son)</option>
-                            <option value="पुत्री">पुत्री (Daughter)</option>
                             <option value="पुत्र/पुत्री">पुत्र/पुत्री</option>
                             <option value="पत्नी">पत्नी (Wife)</option>
                         </select>
@@ -1321,7 +1299,6 @@
                     <div class="photo-upload-card">
                         <div class="photo-info">
                             <label class="photo-title">14. पासपोर्ट साइज फोटो अपलोड करें (Applicant Photo):</label>
-                            <p>फोटो चुनें, यह अपने आप सर्टिफिकेट और हिस्ट्री में सेव हो जाएगा।</p>
                             <div class="photo-controls">
                                 <label for="photoInput" class="file-input-label">फोटो चुनें (Choose Photo)</label>
                                 <input type="file" id="photoInput" accept="image/*" onchange="handlePhotoUpload(this)">
@@ -1343,14 +1320,6 @@
              ========================================== -->
         <div id="historyPane" class="tab-pane">
 
-            <!-- नया सबमिट हुआ रिकॉर्ड अलर्ट बैनर -->
-            <div id="justSavedBanner" class="just-saved-banner">
-                <span id="justSavedText">✅ आपका रिकॉर्ड सफलतापूर्वक सेव हो गया है! नीचे लिस्ट में क्लिक करके उसका एंबेडेड प्रीव्यू देखें।</span>
-                <button type="button" id="openLatestPreviewBtn" class="preview-btn" onclick="openLatestSavedPreview()">
-                    👁️ अभी प्रीव्यू खोलें (Open Preview)
-                </button>
-            </div>
-
             <div class="history-controls">
                 <div class="filter-pills">
                     <button type="button" id="filterAll" class="filter-pill-btn active" onclick="setHistoryFilter('all')">सभी रिकॉर्ड्स (All)</button>
@@ -1368,11 +1337,8 @@
                         <tr>
                             <th>फोटो</th>
                             <th>प्रमाण पत्र व फाइल</th>
-                            <th>आवेदन / प्रमाण पत्र क्र०</th>
                             <th>तारीख</th>
                             <th>नाम (हिंदी / Eng)</th>
-                            <th>पिता/पति व माता</th>
-                            <th>जिला / तहसील / ग्राम</th>
                             <th>एंबेडेड प्रीव्यू (Popup)</th>
                         </tr>
                     </thead>
@@ -1395,20 +1361,20 @@
         <div class="preview-modal-header">
             <div class="embedded-url-box" title="Embedded Separate File URL">
                 <span class="dot"></span>
-                <span id="embeddedUrlDisplay">caste.html?appNo=...</span>
+                
             </div>
             <div class="modal-toolbar-actions">
                 <button type="button" id="downloadPdfBtn" class="toolbar-btn btn-download-pdf" onclick="downloadCertificateA4()">
-                    ⬇️ A4 डाउनलोड (PDF)
+                    ⬇️ PDF
                 </button>
                 <button type="button" class="toolbar-btn btn-print-cert" onclick="printCertificateA4()">
-                    🖨️ प्रिंट करें (Print)
+                    🖨️ Print
                 </button>
                 <button type="button" class="toolbar-btn btn-share-cert" onclick="shareCertificate()">
-                    📤 शेयर करें (Share)
+                    📤 Share
                 </button>
                 <button type="button" class="toolbar-btn btn-close-modal" onclick="closePreviewModal()">
-                    ✖ बंद करें
+                    ✖ Close
                 </button>
             </div>
         </div>
