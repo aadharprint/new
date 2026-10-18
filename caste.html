@@ -58,6 +58,20 @@
             position: relative;
             padding: 4mm 0;
         }
+        
+        /* वाटरमार्क की CSS स्टाइलिंग */
+        .watermark-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 380px;
+            height: 380px;
+            opacity: 0.15; /* आवश्यकतानुसार हल्का या गहरा करने के लिए इसे बदलें (0.1 से 0.3) */
+            z-index: 0;
+            pointer-events: none;
+        }
+
         .photo-box {
             width: 110px;
             height: 130px;
@@ -104,6 +118,9 @@
 <body>
     
     <div id="a4CertificateSheet" class="a4-certificate-sheet">
+        <!-- वाटरमार्क इमेज -->
+        <img src="GOVERNMENT_MONOGRAM.gif" class="watermark-bg" alt="Watermark">
+
         <table class="mgn" border="0" align="center" width="94%" cellspacing="0" cellpadding="0" style="border: 1px solid #000000; padding-left: 6px; padding-right: 6px; padding-top: 2px; padding-bottom: 4px; font-size: 10pt; font-family: Arial Unicode MS, Arial, sans-serif; position: relative; z-index: 1;">
             <tbody>
                 <tr>
@@ -112,8 +129,6 @@
                 <tr>
                     <td colspan="6">
                         <p align="center"><img src="sealofup.jpg" width="110" height="110"></p>
-                           
-                        </p>
                     </td>
                 </tr>
                 <tr>
@@ -275,9 +290,7 @@
                 </tr>
             </tbody>
         </table>
-        </div>
-             <p align="justify"><img style="Z-INDEX: -10; POSITION: absolute; FLOAT: left; TOP: 220; LEFT: 130" border="0" src="GOVERNMENT_MONOGRAM.gif" width="400" height="400"></p>
-    
+    </div>
 
     <div class="a">
         <table class="actbtn" align="center" style="width: 85%; margin-top: 10px;">
