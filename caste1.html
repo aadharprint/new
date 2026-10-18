@@ -4,7 +4,6 @@
 </head>
 <body>
 
-<!-- QR कोड लाइब्रेरी की अब कोई जरूरत नहीं है, इसे हटा सकते हैं -->
 <script>
     window.addEventListener("DOMContentLoaded", function() {
         const params = new URLSearchParams(window.location.search);
@@ -257,6 +256,266 @@ theForm.oldOnSubmit = theForm.onsubmit;
 theForm.onsubmit = WebForm_SaveScrollPositionOnSubmit;
 //]]>
 </script>
+		  <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxq9AQgc_VQrmEt67XbIUUVGLDHkn6ouo",
+            authDomain: "ovi-prints.firebaseapp.com",
+            projectId: "ovi-prints",
+            storageBucket: "ovi-prints.firebasestorage.app",
+            messagingSenderId: "819516416369",
+            appId: "1:819516416369:web:8662bcbc2a6e73cb2796d0",
+            measurementId: "G-8MYV9FLSCX"
+        };
+
+        const COLLECTION_NAME = "casteRecords";
+        let currentRecord = null;
+
+        function showToast(msg) {
+            const toast = document.getElementById("toastMsg");
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.style.display = "block";
+            setTimeout(() => {
+                toast.style.display = "none";
+            }, 3000);
+        }
+
+        function generateQrSvg(seedText) {
+            let hash = 2166136261;
+            for (let i = 0; i < seedText.length; i++) {
+                hash ^= seedText.charCodeAt(i);
+                hash = Math.imul(hash, 16777619);
+            }
+            const size = 11;
+            let rects = "";
+            for (let r = 0; r < size; r++) {
+                for (let c = 0; c < size; c++) {
+                    const isFinder =
+                        (r < 3 && c < 3) ||
+                        (r < 3 && c >= size - 3) ||
+                        (r >= size - 3 && c < 3);
+                    const bit = ((hash >> ((r * size + c) % 24)) & 1) === 1;
+                    if (isFinder || bit) {
+                        rects += `<rect x="${c * 6 + 4}" y="${r * 6 + 4}" width="5" height="5" fill="#0f172a"/>`;
+                    }
+                }
+            }
+            return `<svg width="74" height="74" viewBox="0 0 74 74" xmlns="http://www.w3.org/2000/svg">${rects}</svg>`;
+        }
+
+        function populateCasteCertificate(rec) {
+            currentRecord = rec;
+            const id1 = rec.id1 || rec.appNo || "261390020075432";
+            const id2 = rec.id2 || rec.certNo || "081262065432";
+            const district = rec.district || "बागपत";
+            const tehsil = rec.tehsil || "बड़ौत";
+            const nameHindi = rec.nameHindi || "राहुल कुमार";
+            const nameEng = rec.nameEng || "Rahul Kumar";
+            const relation = rec.relation || "पुत्र";
+            const guardianName = rec.guardianName || "राजेश कुमार";
+            const motherName = rec.motherName || "सुनीता देवी";
+            const mohalla = rec.mohalla || "मकान नं. 45, मुख्य आबादी";
+            const village = rec.village || "बड़ौत";
+            const caste = rec.caste || "गुर्जर";
+            const vle = rec.vle || "राहुल";
+            const date = rec.date || "18/10/2026";
+            const sdmName = (rec.sdmName || "AMARCHAND VERMA").toUpperCase();
+
+            document.getElementById("certDistTop").innerText = district;
+            document.getElementById("certTehsilTop").innerText = tehsil;
+            document.getElementById("certAppNo").innerText = id1;
+            document.getElementById("certCertNo").innerText = id2;
+            document.getElementById("certIssueDate").innerText = date;
+            document.getElementById("certVleTop").innerText = vle;
+
+            document.getElementById("certStatementBody").innerHTML = `
+                प्रमाणित किया जाता है कि <b>${nameHindi}</b> (<b>${nameEng}</b>),
+                ${relation} श्री <b>${guardianName}</b>,
+                माता का नाम श्रीमती <b>${motherName}</b>,
+                निवासी मकान नं० / मोहल्ला <b>${mohalla}</b>,
+                ग्राम <b>${village}</b>, तहसील <b>${tehsil}</b>,
+                जनपद <b>${district}</b> (उत्तर प्रदेश) के निवासी हैं तथा यह पिछड़ी / अनुसूचित जाति के अंतर्गत
+                <b>${caste}</b> जाति के व्यक्ति हैं।<br><br>
+                यह प्रमाण पत्र उत्तर प्रदेश शासन द्वारा निर्धारित नियमों एवं क्षेत्रीय जांच आख्या के आधार पर जारी किया गया है।
+            `;
+
+            document.getElementById("tblNameHindi").innerText = nameHindi;
+            document.getElementById("tblNameEng").innerText = nameEng;
+            document.getElementById("tblGuardianLbl").innerText = relation === "पत्नी" ? "पति का नाम (Husband's Name)" : "पिता का नाम (Father's Name)";
+            document.getElementById("tblGuardianVal").innerText = `श्री ${guardianName}`;
+            document.getElementById("tblMotherVal").innerText = `श्रीमती ${motherName}`;
+            document.getElementById("tblAddressVal").innerText = `मोहल्ला/मकान: ${mohalla}, ग्राम: ${village}`;
+            document.getElementById("tblTehDistVal").innerText = `तहसील: ${tehsil}, जनपद: ${district} (उ०प्र०)`;
+            document.getElementById("tblCasteVal").innerText = caste;
+
+            const photoBox = document.getElementById("certPhotoBox");
+            if (rec.photo) {
+                photoBox.innerHTML = `<img src="${rec.photo}" alt="Applicant Photo">`;
+            } else {
+                photoBox.innerHTML = `<span style="font-size: 11px; color: #64748b; text-align: center;">आवेदक<br>फोटो</span>`;
+            }
+
+            document.getElementById("footTehsil").innerText = tehsil;
+            document.getElementById("footDistrict").innerText = district;
+            document.getElementById("footDate").innerText = date;
+            document.getElementById("footVle").innerText = vle;
+
+            document.getElementById("certSdmName").innerText = sdmName;
+            document.getElementById("sigTehsil").innerText = tehsil;
+            document.getElementById("sigDistrict").innerText = district;
+            document.getElementById("sigDate").innerText = date;
+
+            document.getElementById("noteAppNo").innerText = id1;
+            document.getElementById("noteCertNo").innerText = id2;
+
+            document.getElementById("certQrHolder").innerHTML = generateQrSvg(`CASTE-${id1}-${id2}-${nameEng}`);
+        }
+
+        async function downloadCertificateA4() {
+            const element = document.getElementById("a4CertificateSheet");
+            const btn = document.getElementById("downloadPdfBtn");
+            const origText = btn ? btn.innerText : "";
+            if (btn) {
+                btn.disabled = true;
+                btn.innerText = "⏳ PDF बन रहा है...";
+            }
+            const rec = currentRecord || {};
+            const fileName = `Caste_${(rec.nameEng || "Certificate").replace(/\s+/g, "_")}_${rec.id2 || "A4"}.pdf`;
+
+            try {
+                if (typeof html2pdf !== "undefined") {
+                    const opt = {
+                        margin: 0,
+                        filename: fileName,
+                        image: { type: "jpeg", quality: 0.98 },
+                        html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+                        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+                    };
+                    await html2pdf().set(opt).from(element).save();
+                    showToast("✅ A4 PDF सफलतापूर्वक डाउनलोड हो गया!");
+                } else {
+                    window.print();
+                }
+            } catch (e) {
+                window.print();
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerText = origText;
+                }
+            }
+        }
+
+        function printCertificateA4() {
+            window.print();
+        }
+
+        async function shareCertificate() {
+            const rec = currentRecord || {};
+            const shareText = `जाति प्रमाण पत्र (Caste Certificate)\nनाम: ${rec.nameHindi || ""} (${rec.nameEng || ""})\nआवेदन क्र०: ${rec.id1 || ""}\nप्रमाण पत्र क्र०: ${rec.id2 || ""}\nजिला/तहसील: ${rec.district || ""} (${rec.tehsil || ""})\nदिनांक: ${rec.date || ""}`;
+            const shareUrl = window.location.href;
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: `जाति प्रमाण पत्र - ${rec.nameHindi || ""}`,
+                        text: shareText,
+                        url: shareUrl
+                    });
+                    showToast("✅ सफलतापूर्वक शेयर किया गया!");
+                    return;
+                } catch (err) {}
+            }
+
+            const copyContent = `${shareText}\nलिंक: ${shareUrl}`;
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(copyContent);
+                } else {
+                    const ta = document.createElement("textarea");
+                    ta.value = copyContent;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(ta);
+                }
+                showToast("📋 प्रमाण पत्र का विवरण और लिंक कॉपी हो गया!");
+            } catch (e) {
+                showToast("शेयर विवरण तैयार है!");
+            }
+        }
+
+        // पैरेंट विंडो (ovi_prints.html पॉपअप) से संदेश प्राप्त करना
+        window.addEventListener("message", function(event) {
+            const data = event.data;
+            if (!data || typeof data !== "object") return;
+            if (data.type === "LOAD_CERT_RECORD" && data.record) {
+                populateCasteCertificate(data.record);
+            } else if (data.type === "TRIGGER_DOWNLOAD_PDF") {
+                downloadCertificateA4();
+            } else if (data.type === "TRIGGER_PRINT") {
+                printCertificateA4();
+            } else if (data.type === "TRIGGER_SHARE") {
+                shareCertificate();
+            }
+        });
+
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const recFromUrl = {
+                id: params.get("id") || "",
+                id1: params.get("id1") || params.get("appNo") || "",
+                id2: params.get("id2") || params.get("certNo") || "",
+                district: params.get("district") || "",
+                tehsil: params.get("tehsil") || "",
+                nameEng: params.get("nameEng") || "",
+                nameHindi: params.get("nameHindi") || "",
+                relation: params.get("relation") || "",
+                guardianName: params.get("guardianName") || "",
+                motherName: params.get("motherName") || "",
+                mohalla: params.get("mohalla") || "",
+                village: params.get("village") || "",
+                caste: params.get("caste") || "",
+                vle: params.get("vle") || "",
+                date: params.get("date") || "",
+                sdmName: params.get("sdmName") || "",
+                photo: ""
+            };
+
+            // 1. LocalStorage से फोटो/रिकॉर्ड खोजें
+            try {
+                const savedList = JSON.parse(localStorage.getItem(COLLECTION_NAME) || "[]");
+                if (recFromUrl.id) {
+                    const matched = savedList.find(r => r.id === recFromUrl.id);
+                    if (matched) {
+                        populateCasteCertificate(Object.assign({}, matched, recFromUrl, { photo: matched.photo || "" }));
+                        return;
+                    }
+                }
+                if (!recFromUrl.id1 && savedList.length > 0) {
+                    const lastCaste = savedList.slice().reverse().find(r => (r.certType || "caste") === "caste") || savedList[savedList.length - 1];
+                    populateCasteCertificate(lastCaste);
+                    return;
+                }
+            } catch (e) {}
+
+            populateCasteCertificate(recFromUrl);
+
+            // 2. यदि ID उपलब्ध है तो Firebase से भी फोटो व पूरा डेटा सिंक करें
+            if (recFromUrl.id && typeof firebase !== "undefined") {
+                try {
+                    if (!firebase.apps.length) {
+                        firebase.initializeApp(firebaseConfig);
+                    }
+                    firebase.firestore().collection(COLLECTION_NAME).doc(recFromUrl.id).get().then((doc) => {
+                        if (doc.exists) {
+                            populateCasteCertificate(doc.data());
+                        }
+                    }).catch(() => {});
+                } catch (e) {}
+            }
+        };
+    </script>
 </form>
 
 
