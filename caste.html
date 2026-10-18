@@ -217,31 +217,26 @@ theForm.onsubmit = WebForm_SaveScrollPositionOnSubmit;
 </form>
 
 <!-- फॉर्म (fill_caste.html) से आने वाले डेटा को पेज में भरने की स्क्रिप्ट -->
-    <script>
-        window.addEventListener("DOMContentLoaded", function() {
-            const params = new URLSearchParams(window.location.search);
+  <script>
+    window.addEventListener("DOMContentLoaded", function() {
+        const params = new URLSearchParams(window.location.search);
 
-            const fields = [
-                "id", "district", "tehsil", "nameEng", "nameHindi", 
-                "relation", "guardianName", "motherName", "mohalla", 
-                "village", "caste", "vle", "date", "sdmName"
-            ];
+        const fields = [
+            "id", "district", "tehsil", "nameEng", "nameHindi", 
+            "relation", "guardianName", "motherName", "mohalla", 
+            "village", "caste", "vle", "date", "sdmName"
+        ];
 
-            fields.forEach(function(field) {
-                const value = params.get(field) || "________";
+        fields.forEach(function(field) {
+            const value = params.get(field) || "";
 
-                // ID से ढूँढकर भरना
-                const elById = document.getElementById("out_" + field);
-                if (elById) {
-                    elById.innerText = value;
-                }
-
-                // Class से ढूँढकर सभी जगह भरना
-                const elsByClass = document.querySelectorAll(".out_" + field);
-                elsByClass.forEach(function(el) {
-                    el.innerText = value;
-                });
+            // यह नया कोड एक जैसी सभी ID और सभी Class को ढूँढकर हर जगह डेटा भर देगा
+            const allElements = document.querySelectorAll(`[id="out_${field}"], .out_${field}`);
+            
+            allElements.forEach(function(el) {
+                el.innerText = value;
             });
         });
-    </script>
+    });
+</script>
 </body></html>
