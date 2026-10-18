@@ -126,9 +126,12 @@
     <font size="2pt">उत्तर प्रदेश राज्य की <b><u><span class="out_caste"></span></u></b> जाति के व्यक्ति हैं। यह उत्तर प्रदेश लोक सेवा अनुसूचित जातियों,अनुसूचित जन जातियों तथा अन्य पिछड़े वर्गों के लिए आरक्षण अधिनियम १९९४ की अनुसूची एक के अन्तर्गत मान्यता प्राप्त है।<br> यह भी प्रमाणित किया जाता है कि <span style="font-family: verdana;"> <b><span class="out_nameHindi"></span>/<span class="out_nameEng"></span></b> </span>पूर्वोक्त अधिनियम १९९४ (यथा संशोधित) की अनुसूची २ (जैसा कि उत्तर प्रदेश लोक सेवा)अनुसूचित जातियों, अनुसूचित जनजातियों और अन्य पिछड़े वर्गों के लिए आरक्षण (संशोधन) अधिनियम २००१ द्वारा प्रतिस्थापित किया गया है एंव जो उ०प्र० लोक सेवा अनुसूचित जातियों, अनुसूचित जनजातियों और अन्य पिछड़े वर्गों के लिए आरक्षण (संशोधन) अधिनियम २००२ एवं शासनादेश संख्या 22/16/92 टी० सी०-III, दिनाँक २० अक्टुबर २००८ द्वारा संशोधित की गई है, से आच्छादित नहीं है। इनके माता-पिता की निरन्तर तीन वर्षो की अवधि के लिये सकल वार्षिक आय आठ लाख रुपये या इससे अधिक नहीं है तथा इनके पास धन कर अधिनियम १९५७ मे यथा विहिप छूट सीमा से अधिक सम्पत्ति नहीं है |</font>
 </td>
 <tr><td>&nbsp;</td></tr>
-      <tr>
-        <td colspan="6">&nbsp;<img style="width: 105px; height: 105px" src="https://api.qrserver.com/v1/create-qr-code/?data= आवेदन क्र०-0123456789,प्रमाणपत्र क्र०- 12345678, &amp;chld=L|0&amp;chf=bg,s,"></td>
-      </tr>
+   <!-- टेबल या बॉक्स के अंदर जहाँ QR कोड दिखाना है -->
+<tr>
+    <td colspan="6" style="text-align: center; padding: 10px;">
+        <img id="dynamicQR" style="width: 105px; height: 105px;" alt="QR Code">
+    </td>
+</tr>
        
 <tr><td>&nbsp;</td></tr>
 
@@ -248,5 +251,11 @@ theForm.onsubmit = WebForm_SaveScrollPositionOnSubmit;
                 });
             });
         });
+		// फॉर्म से आए डेटा को QR के लिए तैयार करना
+let textForQR = `आवेदन क्र०: REC-12345\nनाम: ${params.get('nameHindi')}\nजिला: ${params.get('district')}\nतहसील: ${params.get('tehsil')}\nजाति: ${params.get('caste')}\nSDM: ${params.get('sdmName')}`;
+
+// api.qrserver.com का उपयोग करके QR कोड का इमेज सोर्स सेट करना
+const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(textForQR)}`;
+document.getElementById("dynamicQR").src = qrUrl;
   </script>
 </body></html>
