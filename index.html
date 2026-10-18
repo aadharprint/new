@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>डेटा एंट्री फॉर्म - रिकॉर्ड सिस्टम</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #1a73e8; margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        label { font-weight: bold; margin-bottom: 5px; color: #333; font-size: 14px; }
+        input, select { padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; outline: none; }
+        input:focus, select:focus { border-color: #1a73e8; box-shadow: 0 0 5px rgba(26,115,232,0.3); }
+        .btn-submit { grid-column: span 2; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-submit:hover { background-color: #218838; }
+        
+        /* हिस्ट्री टेबल का स्टाइल */
+        .history-section { margin-top: 40px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #1a73e8; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .action-btn { background-color: #007bff; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; display: inline-block; }
+        .delete-btn { background-color: #dc3545; color: white; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; margin-left: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>नया रिकॉर्ड दर्ज करें (Data Entry Form)</h2>
+    
+    <form id="recordForm">
+        <div class="form-grid">
+            
+            <!-- 1. जिला (District) -->
+            <div class="form-group">
+                <label>1. जिला (District) चुनें:</label>
+                <select id="district" required onchange="loadTehsils()">
+                    <option value="">-- जिला चुनें --</option>
+                </select>
+            </div>
+
+            <!-- 2. तहसील (Tehsil) -->
+            <div class="form-group">
+                <label>2. तहसील (Tehsil) चुनें:</label>
+                <select id="tehsil" required onchange="autoFillSDM()">
+                    <option value="">-- पहले जिला चुनें --</option>
+                </select>
+            </div>
+
+            <!-- 3. कस्टमर का नाम (English) -->
+            <div class="form-group">
+                <label>3. नाम (English - First Letter Capital):</label>
+                <input type="text" id="nameEng" required placeholder="Ex: Rahul Kumar" oninput="makeTitleCase(this)">
+            </div>
+
+            <!-- 4. कस्टमर का नाम (Hindi) -->
+            <div class="form-group">
+                <label>4. नाम (हिंदी में):</label>
+                <input type="text" id="nameHindi" required placeholder="उदा. राहुल कुमार">
+            </div>
+
+            <!-- 5. संबंध (Relationship) -->
+            <div class="form-group">
+                <label>5. संबंध (पुत्र / पुत्री / पत्नी):</label>
+                <select id="relation" required onchange="updateRelationLabel()">
+                    <option value="पुत्र">पुत्र</option>
+                    <option value="पुत्री">पुत्री</option>
+                    <option value="पत्नी">पत्नी</option>
+                </select>
+            </div>
+
+            <!-- 6. पिता या पति का नाम -->
+            <div class="form-group">
+                <label id="guardianLabel">6. पिता का नाम (Father's Name):</label>
+                <input type="text" id="guardianName" required placeholder="पिता/पति का नाम हिंदी में">
+            </div>
+
+            <!-- 7. माता का नाम -->
+            <div class="form-group">
+                <label>7. माता का नाम (Mother's Name):</label>
+                <input type="text" id="motherName" required placeholder="माता का नाम हिंदी में">
+            </div>
+
+            <!-- 8. मोहल्ला / मकान नंबर -->
+            <div class="form-group">
+                <label>8. मोहल्ला / मकान नंबर:</label>
+                <input type="text" id="mohalla" required placeholder="मोहल्ला या मकान नं.">
+            </div>
+
+            <!-- 9. गाँव / ग्राम -->
+            <div class="form-group">
+                <label>9. ग्राम / गाँव का नाम:</label>
+                <input type="text" id="village" required placeholder="गाँव का नाम दर्ज करें">
+            </div>
+
+            <!-- 10. जाति (Caste Dropdown) -->
+            <div class="form-group">
+                <label>10. जाति (Caste) चुनें:</label>
+                <select id="caste" required>
+                    <option value="">-- जाति चुनें --</option>
+                    <option value="गुर्जर">गुर्जर</option>
+                    <option value="प्रजापति">प्रजापति</option>
+                    <option value="कश्यप">कश्यप</option>
+                    <option value="जाट">जाट</option>
+                    <option value="यादव">यादव</option>
+                    <option value="सैनी">सैनी</option>
+                    <option value="पाल">पाल</option>
+                    <option value="विश्वकर्मा">विश्वकर्मा</option>
+                    <option value="कुम्हार">कुम्हार</option>
+                    <option value="नाई">नाई</option>
+                    <option value="धोबी">धोबी</option>
+                    <option value="तेली">तेली</option>
+                    <option value="लोहार">लोहार</option>
+                    <option value="अंसारी">अंसारी</option>
+                    <option value="सैफी">सैफी</option>
+                </select>
+            </div>
+
+            <!-- 11. VLE का नाम -->
+            <div class="form-group">
+                <label>11. VLE (संचालक) का नाम:</label>
+                <select id="vle" required>
+                    <option value="">-- VLE चुनें --</option>
+                    <option value="राहुल">राहुल</option>
+                    <option value="रोहित">रोहित</option>
+                    <option value="संदीप">संदीप</option>
+                    <option value="मुकेश">मुकेश</option>
+                    <option value="समीर">समीर</option>
+                    <option value="शमीम">शमीम</option>
+                    <option value="शौकीन">शौकीन</option>
+                    <option value="अमित">अमित</option>
+                    <option value="विकास">विकास</option>
+                    <option value="दीपक">दीपक</option>
+                </select>
+            </div>
+
+            <!-- 12. तारीख (Date) -->
+            <div class="form-group">
+                <label>12. तारीख (Date):</label>
+                <input type="date" id="certDate" required>
+            </div>
+
+            <!-- 13. SDM का नाम (Auto-filled in CAPITAL LETTERS) -->
+            <div class="form-group" style="grid-column: span 2;">
+                <label>13. SDM का नाम (CAPITAL LETTERS में अपने आप आएगा, आप बदल भी सकते हैं):</label>
+                <input type="text" id="sdmName" required placeholder="EX: SUBHASH SINGH" style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
+            </div>
+
+            <button type="submit" class="btn-submit">सेव करें और पेज जनरेट करें (Save & Generate)</button>
+        </div>
+    </form>
+
+    <!-- हिस्ट्री सेक्शन -->
+    <div class="history-section">
+        <h2>पुराने सेव किए गए रिकॉर्ड्स (Saved History)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>तारीख</th>
+                    <th>नाम (हिंदी / Eng)</th>
+                    <th>पिता/पति</th>
+                    <th>जिला / तहसील</th>
+                    <th>जाति</th>
+                    <th>SDM Name</th>
+                    <th>एक्शन (PDF / Print)</th>
+                </tr>
+            </thead>
+            <tbody id="historyTableBody">
+                <!-- हिस्ट्री अपने आप यहाँ लोड होगी -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // 1. यूपी के 15 जिले, उनकी तहसीलें और हर तहसील के हिसाब से SDM का नाम (CAPITAL LETTERS में)
+    const districtData = {
+        "बागपत": {
+            "बागपत": "SUBHASH SINGH",
+            "बड़ौत": "AMARCHAND VERMA",
+            "खेखड़ा": "JYOTI SHARMA"
+        },
+        "मेरठ": {
+            "मेरठ सदर": "KAMAL KISHORE",
+            "सरधना": "PANKAJ RATHORE",
+            "मवाना": "AKHILESH YADAV"
+        },
+        "मुजफ्फरनगर": {
+            "मुजफ्फरनगर सदर": "PARMANAND JHA",
+            "बुढ़ाना": "ARUN KUMAR",
+            "खतौली": "MONALISA",
+            "जानसठ": "SUBODH KUMAR"
+        },
+        "शामली": {
+            "शामली": "VINAY PRATAP SINGH",
+            "कैराना": "SWAPNIL YADAV",
+            "ऊन": "ARCHANA SHARMA"
+        },
+        "सहारनपुर": {
+            "सहारनपुर": "YUVRAJ SINGH",
+            "देवबंद": "ANKUR VERMA",
+            "नकुड़": "AJAY KUMAR",
+            "बेहट": "DEEPAK KUMAR",
+            "रामपुर मनिहारान": "SURENDRA KUMAR"
+        },
+        "गाजियाबाद": {
+            "गाजियाबाद": "ARUN DIXIT",
+            "मोदीनगर": "SANTOSH RAI",
+            "लोनी": "RAJENDRA KUMAR"
+        },
+        "हापुड़": {
+            "हापुड़": "SUNEET KUMAR",
+            "गढ़मुक्तेश्वर": "PRAHLAD SINGH",
+            "धौलाना": "VIVEK YADAV"
+        },
+        "गौतम बुद्ध नगर": {
+            "सदर (नोएडा)": "CHARUL KEERTI",
+            "दादरी": "ALOK GUPTA",
+            "जेवर": "ABHAY SINGH"
+        },
+        "बुलंदशहर": {
+            "बुलंदशहर": "NAVEEN KUMAR",
+            "सिकंदराबाद": "RENU SINGH",
+            "खुर्जा": "DURGESH SINGH",
+            "अनूपशहर": "GAJENDRA SINGH",
+            "स्याना": "VIMAL KISHORE"
+        },
+        "अमरोहा": {
+            "अमरोहा": "SUDHIR KUMAR",
+            "धनौरा": "CHANDRAKANTA",
+            "हसनपुर": "BHAGAT SINGH",
+            "नौगांवा सादात": "SUNITA SINGH"
+        },
+        "बिजनौर": {
+            "बिजनौर": "MOHIT KUMAR",
+            "नजीबाबाद": "VIJAY VARDHAN",
+            "नगीना": "SHAILENDRA SINGH",
+            "धामपुर": "RITU RANI",
+            "चांदपुर": "NITIN TEOTIA"
+        },
+        "मुरादाबाद": {
+            "मुरादाबाद": "PRABUDDHA SINGH",
+            "कांठ": "AJAY MISHRA",
+            "ठाकुरद्वारा": "MANI ARORA",
+            "बिलारी": "RAJ BAHADUR"
+        },
+        "आगरा": {
+            "आगरा सदर": "PARIKSHIT KHATANA",
+            "एत्मादपुर": "RATAN VERMA",
+            "किरावली": "ANUJ NEHRA",
+            "खेरागढ़": "SANDEEP YADAV",
+            "बाह": "SRISHTI MISHRA",
+            "फतेहाबाद": "VIJAY SHARMA"
+        },
+        "मथुरा": {
+            "मथुरा": "VAIBHAV GUPTA",
+            "छाता": "SHWETA SINGH",
+            "मांट": "INDRANANDAN SINGH",
+            "महावन": "NIKET VERMA",
+            "गोवर्धन": "NEELAM SRIVASTAVA"
+        },
+        "अलीगढ़": {
+            "कोल": "DIGVIJAY SINGH",
+            "खैर": "MAHIMA RAJPUT",
+            "अतरौली": "ANIL KATIYAR",
+            "इगलास": "SANJAY MISHRA",
+            "गभाना": "BHAVNA VIMAL"
+        }
+    };
+
+    window.onload = function() {
+        const distSelect = document.getElementById("district");
+        for (let dist in districtData) {
+            let opt = document.createElement("option");
+            opt.value = dist;
+            opt.innerText = dist;
+            distSelect.appendChild(opt);
+        }
+        document.getElementById("certDate").valueAsDate = new Date();
+        renderHistory();
+    };
+
+    function loadTehsils() {
+        const dist = document.getElementById("district").value;
+        const tehsilSelect = document.getElementById("tehsil");
+        tehsilSelect.innerHTML = '<option value="">-- तहसील चुनें --</option>';
+        document.getElementById("sdmName").value = "";
+
+        if (dist && districtData[dist]) {
+            for (let teh in districtData[dist]) {
+                let opt = document.createElement("option");
+                opt.value = teh;
+                opt.innerText = teh;
+                tehsilSelect.appendChild(opt);
+            }
+        }
+    }
+
+    // तहसील चुनते ही SDM का नाम CAPITAL में भरने का फंक्शन
+    function autoFillSDM() {
+        const dist = document.getElementById("district").value;
+        const teh = document.getElementById("tehsil").value;
+        const sdmInput = document.getElementById("sdmName");
+
+        if (dist && teh && districtData[dist][teh]) {
+            sdmInput.value = districtData[dist][teh].toUpperCase();
+        } else {
+            sdmInput.value = "";
+        }
+    }
+
+    function makeTitleCase(inputElement) {
+        let words = inputElement.value.toLowerCase().split(' ');
+        for (let i = 0; i < words.length; i++) {
+            if (words[i].length > 0) {
+                words[i] = words[i][0].toUpperCase() + words[i].slice(1);
+            }
+        }
+        inputElement.value = words.join(' ');
+    }
+
+    function updateRelationLabel() {
+        const rel = document.getElementById("relation").value;
+        const label = document.getElementById("guardianLabel");
+        if (rel === "पत्नी") {
+            label.innerText = "6. पति का नाम (Husband's Name):";
+        } else {
+            label.innerText = "6. पिता का नाम (Father's Name):";
+        }
+    }
+
+    function formatToDDMMYYYY(dateStr) {
+        if (!dateStr) return "";
+        const parts = dateStr.split("-");
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+
+    document.getElementById("recordForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const record = {
+            id: "REC-" + new Date().getTime(),
+            district: document.getElementById("district").value,
+            tehsil: document.getElementById("tehsil").value,
+            nameEng: document.getElementById("nameEng").value.trim(),
+            nameHindi: document.getElementById("nameHindi").value.trim(),
+            relation: document.getElementById("relation").value,
+            guardianName: document.getElementById("guardianName").value.trim(),
+            motherName: document.getElementById("motherName").value.trim(),
+            mohalla: document.getElementById("mohalla").value.trim(),
+            village: document.getElementById("village").value.trim(),
+            caste: document.getElementById("caste").value,
+            vle: document.getElementById("vle").value,
+            date: formatToDDMMYYYY(document.getElementById("certDate").value),
+            // हमेशा CAPITAL LETTERS में सेव होगा
+            sdmName: document.getElementById("sdmName").value.trim().toUpperCase()
+        };
+
+        let history = JSON.parse(localStorage.getItem("casteRecords") || "[]");
+        history.push(record);
+        localStorage.setItem("casteRecords", JSON.stringify(history));
+
+        const params = new URLSearchParams(record);
+        window.location.href = `caste.html?${params.toString()}`;
+    });
+
+    function renderHistory() {
+        const tbody = document.getElementById("historyTableBody");
+        let history = JSON.parse(localStorage.getItem("casteRecords") || "[]");
+        tbody.innerHTML = "";
+
+        if (history.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">अभी तक कोई रिकॉर्ड सेव नहीं है।</td></tr>';
+            return;
+        }
+
+        history.slice().reverse().forEach((rec) => {
+            const params = new URLSearchParams(rec);
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${rec.date}</td>
+                <td><b>${rec.nameHindi}</b><br><small>${rec.nameEng}</small></td>
+                <td>${rec.relation} - ${rec.guardianName}</td>
+                <td>${rec.district} (${rec.tehsil})</td>
+                <td>${rec.caste}</td>
+                <td><b>${rec.sdmName}</b></td>
+                <td>
+                    <a href="caste.html?${params.toString()}" class="action-btn">देखें / PDF बनाएं</a>
+                    <button class="delete-btn" onclick="deleteRecord('${rec.id}')">हटाएं</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function deleteRecord(id) {
+        if (confirm("क्या आप इस रिकॉर्ड को हटाना चाहते हैं?")) {
+            let history = JSON.parse(localStorage.getItem("casteRecords") || "[]");
+            history = history.filter(item => item.id !== id);
+            localStorage.setItem("casteRecords", JSON.stringify(history));
+            renderHistory();
+        }
+    }
+</script>
+
+</body>
+</html>
